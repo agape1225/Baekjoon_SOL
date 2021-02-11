@@ -25,53 +25,42 @@ int main(void) {
 				bord[i][j] = -1;
 		}
 	}
-
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col; j++) {
-			weightR[i] += bord[i][j];
-			weightC[j] += bord[i][j];
-		}
-	}
-
-	int minR = 0;
-	int minC = 0;
-	int min = 1000;
+	
+	int min = 64;
 
 	for (int i = 0; i <= row - 8; i++) {
-		int buff = 0;
-		for (int j = i; j < i + 8; j++) {
-			if (weightR[i] >= 0)
-				buff += weightR[j];
-			else
-				buff -= weightR[j];
-		}
-		if (buff < min) {
-			min = buff;
-			minR = i;
-		}
-	}
+		for (int j = 0; j <= col - 8; j++) {
 
-	min = 1000;
+			int startW = 0;
+			int startB = 0;
 
-	for (int i = 0; i <= col - 8; i++) {
-		int buff = 0;
-		for (int j = i; j < i + 8; j++) {
-			if (weightC[i] >= 0)
-				buff += weightC[j];
-			else
-				buff -= weightC[j];
-		}
-		if (buff < min) {
-			min = buff;
-			minC = i;
-		}
-	}
+			for (int k = i; k < i + 8; k++) {
+				for(int l = j; l < j + 8; l++){
+					if (k % 2 == l % 2) {
+						if (bord[k][l] == 1)
+							startB++;
+						else
+							startW++;
+					}
+					else {
+						if (bord[k][l] == 1)
+							startW++;
+						else
+							startB++;
+					}
 
-	for (int i = minR; i < minR + 8; i++) {
-		for (int j = minC; j < minC + 8; j++) {
+				
+				}
+			}
+
+			int buff = startW <= startB ? startW : startB;
+			if (buff < min)
+				min = buff;
 
 		}
 	}
+
+	cout << min << endl;
 
 	return 0;
 
