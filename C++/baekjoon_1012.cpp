@@ -1,5 +1,7 @@
 #include <iostream>
 #include <queue>
+#include <stack>
+#include <cstdio>
 
 #define SIZE 50
 
@@ -17,56 +19,72 @@ bool checkRange(int row, int col) {
 		return false;
 }
 
-void checkField(bool field[SIZE][SIZE], int row, int col) {
+void checkField(int field[SIZE][SIZE], int row, int col) {
 	queue<Point> locate;
+	//stack<Point> locate;
 	Point loc;
 	loc.row = row;
 	loc.col = col;
 	locate.push(loc);
+	field[row][col] = false;
 
 	while (!locate.empty()) {
 
 		Point current = locate.front();
 		locate.pop();
 
-		field[current.row][current.col] = false;
-
-		if (checkRange(current.row - 1, current.col) && field[current.row - 1][current.col] == true) {
+		if (checkRange(current.row - 1, current.col) == true && field[current.row - 1][current.col] == 1) {
 			Point buff;
 			buff.row = current.row - 1;
 			buff.col = current.col;
+			field[current.row - 1][current.col] = 0;
 			locate.push(buff);
 		}
 
-		if (checkRange(current.row + 1, current.col) && field[current.row + 1][current.col] == true) {
+		if (checkRange(current.row + 1, current.col) == true && field[current.row + 1][current.col] == 1) {
 			Point buff;
 			buff.row = current.row + 1;
 			buff.col = current.col;
+			field[current.row + 1][current.col] = 0;
 			locate.push(buff);
 		}
 
-		if (checkRange(current.row, current.col + 1) && field[current.row][current.col + 1] == true) {
+		if (checkRange(current.row, current.col + 1) == true && field[current.row][current.col + 1] == 1) {
 			Point buff;
 			buff.row = current.row;
 			buff.col = current.col + 1;
+			field[current.row][current.col + 1] = 0;
 			locate.push(buff);
 		}
 
-		if (checkRange(current.row , current.col - 1) && field[current.row][current.col - 1] == true) {
+		if (checkRange(current.row , current.col - 1) == true && field[current.row][current.col - 1] == 1) {
 			Point buff;
 			buff.row = current.row;
 			buff.col = current.col - 1;
+			field[current.row][current.col - 1] = 0;
 			locate.push(buff);
 		}
+	}
+}
 
+void printArr(int arr[SIZE][SIZE], int row, int col) {
+	
+	cout << endl;
 
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			//cout << dec << arr[i][j] << " ";
+			printf("%d ", arr[i][j]);
+		}
+		cout << endl;
 	}
 
+	cout << endl;
 }
 
 int main(void) {
 	int T;
-	bool field[SIZE][SIZE];
+	int field[SIZE][SIZE];
 	
 
 	cin >> T;
@@ -78,22 +96,26 @@ int main(void) {
 
 		for (int j = 0; j < row; j++) {
 			for (int k = 0; k < col; k++)
-				field[SIZE][SIZE] = false;
+				field[j][k] = -1;
 		}
 
 		for (int j = 0; j < num; j++) {
 			int buffRow, buffCol;
 			cin >> buffRow >> buffCol;
-			field[buffRow][buffCol] = true;
+			field[buffRow][buffCol] = 1;
 		}
+
+		//printArr(field, row, col);
 
 		for (int j = 0; j < row; j++) {
 			for (int k = 0; k < col; k++) {
-				if (field[j][k] == true) {
+				if (field[j][k] == 1) {
 					checkField(field, j, k);
 					count++;
+					//printArr(field, row, col);
 				}
 			}
+
 		}
 
 		cout << count << endl;
