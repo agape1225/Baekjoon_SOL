@@ -1,28 +1,27 @@
 #include <iostream>
 #include <algorithm>
-#define SIZE 100000
+#include <cstdio>
+//#define SIZE 100001
 
 using namespace std;
 
-bool binarySearch(int arr[SIZE], int num, int size) {
+int arr[100001];
+
+bool binarySearch(int num, int size) {
 	
 	int start = 0;
 	int end = size - 1;
+	int index;
 
-	while (true) {
+	while (end - start >= 0) {
 
-		int index = (start + end) / 2;
+		index = (start + end) / 2;
 
+		//if (0 > index || index >= size)
+		//	return false;
 
 		if (arr[index] == num)
 			return true;
-
-
-		if (start == end)
-			return false;
-
-		
-
 
 		if (arr[index] > num)
 			end = index - 1;
@@ -30,36 +29,63 @@ bool binarySearch(int arr[SIZE], int num, int size) {
 		else
 			start = index + 1;
 	}
+	
+	return false;
 }
+
+/*void Solution(int n, int key) {
+
+	int start = 0;
+	int end = n - 1;
+	int mid;
+
+	while (end - start >= 0) {
+		mid = (start + end) / 2;
+
+		if (arr[mid] == key) {   //key 값이 배열의 중앙 값과 같을때
+			printf("1\n");
+			return;
+
+		}
+		else if (arr[mid] > key) { //key 값이 배열의 중앙 값보다 작을때 (왼쪽으로)
+			end = mid - 1;
+
+		}
+		else {  //key 값이 배열의 중앙 값보다 클때 (오른쪽으로)
+			start = mid + 1;
+		}
+	}
+
+	printf("0\n");
+	return;
+}*/
+
 
 int main(void) {
 
-	int arr[SIZE];
 	int size;
 	
-	cin >> size;
+	scanf("%d", &size);
+	//cin >> size;
 	for (int i = 0; i < size; i++) {
-		cin >> arr[i];
+		scanf("%d", &arr[i]);
 	}
 
 	sort(arr, arr + size);
 
-	/*for (int i = 0; i < size; i++) {
-		cout << arr[i] << " ";
-	}
-	cout << endl;
-	*/
 	int loop;
-	cin >> loop;
+	int buff;
+	scanf("%d", &loop);
 
 	for (int i = 0; i < loop; i++) {
-		int buff;
-		cin >> buff;
+		scanf("%d", &buff);
+		//cin >> buff;
+		//binarySearch(buff, size);
 
-		if (binarySearch(arr, buff, size))
-			cout << 1 << endl;
+		if (binarySearch(buff, size))
+			printf("1\n");
 		else
-			cout << 0 << endl;
+			printf("0\n");
 	}
 
 	return 0;
