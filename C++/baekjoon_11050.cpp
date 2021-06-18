@@ -21,7 +21,7 @@ int main(void) {
 
 	ans = sum_N;
 
-	cout << ans << endl;
+	//cout << ans << endl;
 
 	buff_K = N - K;
 
@@ -31,7 +31,7 @@ int main(void) {
 
 	//ans /= buff_ans;
 
-	cout << buff << endl;
+	//cout << buff << endl;
 
 	buff_K = K;
 	buff_ans = 1;
@@ -40,7 +40,7 @@ int main(void) {
 		buff_ans *= buff_K--;
 	}
 
-	cout << buff_ans << endl;
+	//cout << buff_ans << endl;
 
 	ans = ans / (buff_ans * buff);
 
