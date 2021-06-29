@@ -1,7 +1,10 @@
 #include <iostream>
-#include <set>
+#include <algorithm>
+#define SIZE 3000000
 
 using namespace std;
+
+int set[SIZE];
 
 int main(void) {
 
@@ -9,8 +12,9 @@ int main(void) {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	set<int> s;
-	int size, buff, trash;
+	int index = 0;
+
+	int size, buff;
 	string input;
 
 	cin >> size;
@@ -22,55 +26,47 @@ int main(void) {
 		cin >> input;
 
 		if (input == "add") {
-			cin >> buff;
-			s.insert(buff);
+
+			if (!binary_search(set, set + index, buff)){
+
+				cin >> buff;
+				set[index++] = buff;
+
+				sort(set, set + index);
+
+			}
+
+
 		}
 		else if (input == "remove") {
 
 			cin >> buff;
-			auto it = s.find(buff);
 
-			if (s.end() != it)
-				s.erase(it);
 
 		}
 		else if (input == "check") {
 			cin >> buff;
-			auto it = s.find(buff);
 
-			if (s.end() == it)
-				cout << 0 << '\n';
-			else
-				cout << 1 << '\n';
 
 
 		}
 		else if (input == "toggle") {
 			cin >> buff;
-			auto it = s.find(buff);
 
-			if (s.end() == it)
-				s.insert(buff);
-			else
-				s.erase(it);
 
 		}
 		else if (input == "all") {
 
-			//s.clear();
-			set<int> s;
 
 			for (int j = 1; j < 21; j++) {
 
-				s.insert(j);
 
 			}
 
 		}
 		else {				// empty
 
-			//s.clear();
-			set<int> s;
+
 
 		}
 	}
