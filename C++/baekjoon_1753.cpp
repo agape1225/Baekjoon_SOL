@@ -1,114 +1,87 @@
 #include <iostream>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <set>
 
 #define SIZE 20001
-#define MAX 11
+#define MAX 999999999
 
 using namespace std;
 
-int graph[SIZE][SIZE];
-bool complet[SIZE] = { 0 };
-
-int V, E;
-int start;
-
-int get_index(int v, int start) {
-
-	int min = MAX;
-	int ans = -1;
-
-	/*for (int i = 1; i <= v; i++)
-		cout << graph[start][i] << ' ';
-	cout << endl;*/
-
-	for (int i = 1; i <= v; i++) {
-
-		if (graph[start][i] != 0 && graph[start][i] < min && !complet[i]) {
-			min = graph[start][i];
-			ans = i;
-		}
-
-	}
-
-	return ans;
-
-}
-
-bool is_end(int v, int start) {
-
-	for (int i = 1; i <= v; i++) {
-
-		if (!complet[i] && start != i && graph[start][i] != MAX)
-			return false;
-
-	}
-
-	return true;
-
-}
-
 int main(void) {
 
-	ios::sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	
+
+	int V, E, start;
+	vector < pair<int, int>> graph[SIZE];
+	//multiset<pair<int, int>> pq;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+	bool visited[SIZE] = { 0 };
+	int cost[SIZE] = { 0 };
+
+	int buff1, buff2, buff3;
 
 	cin >> V >> E;
 	cin >> start;
 
-	for (int i = 1; i <= V; i++) {
-
-		for (int j = 1; j <= V; j++) {
-			if(i == j)
-				graph[i][j] = 0;
-			else
-				graph[i][j] = MAX;
-		}
-			
-
-	}
-
 	for (int i = 0; i < E; i++) {
-		int buff1, buff2;
+		
+		cin >> buff1 >> buff2 >> buff3;
+		graph[buff1].push_back(make_pair(buff3, buff2));
 
-		cin >> buff1 >> buff2;
-		cin >> graph[buff1][buff2];
-	}
-
-	/*for (int i = 1; i <= V; i++) {
-		for (int j = 1; j <= V; j++) {
-			cout << graph[i][j] << ' ';
-		}
-		cout << endl;
-	}*/
-
-	while (true) {
-
-		//cout << 1;
-
-		int index = get_index(V, start);
-		complet[index] = true;
-
-		//cout << index << endl;
-
-		for (int i = 1; i <= V; i++) {
-			if (graph[index][i] != MAX) {
-				if (graph[index][i] + graph[start][index] < graph[start][i]) {
-					graph[start][i] = graph[index][i] + graph[start][index];
-				}
-			}
-		}
-
-		if (is_end(V, start))
-			break;
 	}
 
 	for (int i = 1; i <= V; i++) {
-		if (graph[start][i] != MAX)
-			cout << graph[start][i] << endl;
+		cost[i] = MAX;
+	}
+
+	//pq.insert(make_pair(0,start));
+	pq.push(make_pair(0, start));
+	cost[start] = 0;
+
+	while (!pq.empty()) {
+
+		//pair<int, int> buff = (*pq.begin());
+		pair<int, int> buff = pq.top();
+		//pq.erase(pq.begin());
+		pq.pop();
+
+		if (!visited[buff.second]) {
+
+			visited[buff.second] = true;
+			cost[buff.second] = buff.first;
+
+			for (auto it = graph[buff.second].begin(); it != graph[buff.second].end(); it++) {
+
+				int cost_buff = buff.first + (*it).first;
+
+				if (!visited[(*it).second] && cost[(*it).second] > cost_buff) {
+
+					cost[(*it).second] = cost_buff;
+					//pq.insert(make_pair(cost_buff, (*it).second));
+					pq.push(make_pair(cost_buff, (*it).second));
+
+				}
+
+			}
+
+
+		}
+
+	}
+
+	for (int i = 1; i <= V; i++) {
+
+		if (cost[i] == MAX)
+			cout << "INF";
 		else
-			cout << "INF" << endl;
+			cout << cost[i];
+		cout <<  '\n';
 	}
 
 	return 0;
