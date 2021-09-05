@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <algorithm>
 
 #define SIZE 1001
 
@@ -20,19 +21,27 @@ void DFS(int start) {
 	while (!s.empty()) {
 
 		int buff = s.top();
-		s.pop();
+		bool dir = false;
 
-		if (!visited[buff])
+
+		if (!visited[buff]) {
 			cout << buff << ' ';
+			visited[buff] = true;
+		}
+			
 
 		for (auto it = graph[buff].begin(); it != graph[buff].end(); it++) {
 
 			if (!visited[*it]) {
 				//visited[*it] = true;
 				s.push(*it);
+				dir = true;
 				break;
 			}
 		}
+
+		if(!dir)
+			s.pop();
 
 	}
 
@@ -41,6 +50,28 @@ void DFS(int start) {
 void BFS(int start) {
 
 	bool visited[SIZE] = { 0 };
+	queue<int> q;
+
+	q.push(start);
+	visited[start] = true;
+	
+	while (!q.empty()) {
+
+		int buff = q.front();
+		q.pop();
+		
+		cout << buff << ' ';
+
+		for (auto it = graph[buff].begin(); it != graph[buff].end(); it++) {
+
+			if (!visited[*it]) {
+				q.push(*it);
+				visited[*it] = true;
+			}
+
+		}
+
+	}
 
 }
 
@@ -59,7 +90,17 @@ int main(void) {
 
 	}
 
+	for (int i = 1; i <= N; i++) {
+
+		sort(graph[i].begin(), graph[i].end());
+
+	}
+
 	DFS(V);
+
+	cout << endl;
+
+	BFS(V);
 
 	return 0;
 
