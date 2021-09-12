@@ -20,24 +20,46 @@ int solution(string dartResult) {
 
         if ('0' <= dartResult[i] && dartResult[i] <= '9') {
 
-            
+            if ('0' <= dartResult[i + 1] && dartResult[i + 1] <= '9') {
 
-            if (!('0' <= dartResult[i + 1] && dartResult[i + 1] <= '9')) {
                 dart_points.push_back(dartResult.substr(start, count));
                 dir = false;
-                //start = i;
+                start = i;
                 count = 1;
+                i++;
+                count = 2;
+
             }
             else {
-                start = i;
-            }
+                if (count > 1) {
+                    dart_points.push_back(dartResult.substr(start, count));
+                    dir = false;
+                    start = i;
+                    count = 1;
+                }
+                else {
+                    count++;
+                }
 
-            
+
+            }
 
 
         }
         else
             count++;
+
+        /*if ('0' <= dartResult[i] && dartResult[i] <= '9' && !('0' <= dartResult[i + 1] && dartResult[i + 1] <= '9')) {
+
+            dart_points.push_back(dartResult.substr(start, count));
+            dir = false;
+            start = i;
+            count = 1;
+
+
+        }
+        else
+            count++;*/
     }
 
     dart_points.push_back(dartResult.substr(start, count + 1));
@@ -52,17 +74,17 @@ int solution(string dartResult) {
 
         int num;
         string buff;
-        
+
         ss.str(*it);
         ss >> num;
-        
+
         //cout << num << ' ' << buff << endl;
 
         int index = 0;
 
         while ('0' <= (*it)[index] && (*it)[index] <= '9')
             index++;
-        cout << (*it) << ' ' << num << ' ' << index << endl;
+        //cout << (*it) << ' ' << num << ' ' << index << endl;
 
         if ((*it)[index] == 'S') {
 
@@ -102,15 +124,5 @@ int solution(string dartResult) {
 
     answer = ans[0] + ans[1] + ans[2];
 
-    cout << endl << endl << ans[0] << ' ' << ans[1] << ' ' << ans[2];
-
     return answer;
-}
-    
-int main(void) {
-
-    string buff = "1D2S#10S";
-
-    solution(buff);
-
 }
