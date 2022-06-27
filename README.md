@@ -44,7 +44,7 @@
   <p align="center">
     꾸준하게 푼 문제의 코드를 올리는 repository입니다.
     <br />
-    <a href="https://apape1225.tistory.com/category/programming/%EB%B0%B1%EC%A4%80%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%ED%92%80%EC%9D%B4"><strong>상세풀이 블로그 »</strong></a>
+    <a href="https://apape1225.tistory.com/category/programming/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%ED%92%80%EC%9D%B4"><strong>상세풀이 블로그 »</strong></a>
     <br />
     <br />
   </p>
