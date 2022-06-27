@@ -36,7 +36,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://onlinejudgeimages.s3-ap-northeast-1.amazonaws.com/images/boj-og.png" alt="Logo" width="80" height="80">
+    <img src="https://onlinejudgeimages.s3-ap-northeast-1.amazonaws.com/images/boj-og.png" alt="Logo">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
