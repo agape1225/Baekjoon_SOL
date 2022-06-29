@@ -21,3 +21,4 @@
 
 <!--- [x] Add Changelog-->
 - [ ] <a href="https://www.acmicpc.net/problem/5525"><strong>5252 번</strong></a>
+- [ ] <a href="https://www.acmicpc.net/problem/6064"><strong>6064 번</strong></a>
