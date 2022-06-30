@@ -22,3 +22,4 @@
 <!--- [x] Add Changelog-->
 - [ ] <a href="https://www.acmicpc.net/problem/5525"><strong>5252 번</strong></a>
 - [ ] <a href="https://www.acmicpc.net/problem/6064"><strong>6064 번</strong></a>
+- [ ] C++ Compare 함수 이론 복습 : <a href="https://codingdog.tistory.com/entry/c-sort-%EC%9D%98-%EB%B9%84%EA%B5%90%ED%95%A8%EC%88%98%EA%B0%80-true%EB%A7%8C-%EB%A6%AC%ED%84%B4%ED%95%A0-%EB%95%8C-%EC%96%B4%EB%96%A4-%EC%9D%BC%EC%9D%B4-%EC%9D%BC%EC%96%B4%EB%82%A0%EA%B9%8C%EC%9A%94">LINK</a>
