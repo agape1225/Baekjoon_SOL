@@ -9,17 +9,17 @@ struct Compare {
 	bool operator() (const long &a, const long &b) const{
 		  long buffA = a;
       long buffB = b;
-      if(a < 0){
+      if(a < 0)
         buffA = a * - 1;
-      }
+      
 
       if(b < 0)
         buffB = b * -1;
 
       if(buffA == buffB)
-        return a < b;
+        return a <= b;
       else
-        return buffA < buffB;
+        return buffA <= buffB;
 	}
 };
 
@@ -41,16 +41,9 @@ int main(void){
     
     cin >> input;
     if(input != 0){
-
       s.insert(input);
 
-      /*for(auto it = s.begin(); it != s.end(); it++){
-        cout << *it << ' ';
-      }
-      cout << endl;*/
     }else{
-
-      //cout << "It's zero!" << endl;
 
       if(s.empty())
         cout << 0 << '\n';
