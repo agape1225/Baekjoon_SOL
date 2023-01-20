@@ -1,113 +1,70 @@
 #include <iostream>
-#include <cstdio>
-#define SIZE 10
+#include <queue>
+#include <utility>
+#include <string>
 
 using namespace std;
 
+bool remote[10] = { 0 };
+bool visited[500001] = { 0 };
+
 int main(void) {
-	int button[SIZE] = { 0,1,2,3,4,5,6,7,8,9 };
-	int input, size;
 
-	cin >> input;
-	cin >> size;
+	int N, M, buff;
+	int start_num = 100;
+	queue<pair<int, int>> q;
+	
+	cin >> N >> M;
 
-	for (int i = 0; i < size; i++) {
-		int buff;
+	for (int i = 0; i < M; i++) {
 		cin >> buff;
-		button[buff] = -1;
+		remote[buff] = true;
 	}
 
-	if (97 < input && input < 104) {
-		if (input >= 100)
-			cout << input - 100;
-		else
-			cout << 100 - input;
-	}
-	else {
-		int digitI = 0;
-		int digit = 1;
-		int dir = 1;
-		while (true) {
-			if (input / digit == 0)
-				break;
-			digit *= 10;
-			digitI++;
+	q.push(make_pair(100, 0));
+	visited[100] = true;
+
+	while (!q.empty()) {
+		
+		int channel = q.front().first;
+		int count = q.front().second;
+		q.pop();
+
+		//cout << channel << endl;
+
+		if (channel == N) {
+			cout << count;
+			return 0;
 		}
-		digit /= 10;
-		int buffDigit = digit;
-		int indexP = input / digit;
-		int indexM = input / digit;
-		int num = 0;
-		while (true) {
 
-			//cout << "------------------------------" << endl << endl;
-			//cout << indexP << endl << indexM << endl;
-			if (!(-1 < indexM && indexP < 10)) {
-				
-				if (0 < indexM) {
-					dir = 1;
+		//번호 누르기
+		for (int i = 0; i < 10; i++) {
+			if (remote[i]){
+				if (channel == 100) {
+					q.push(make_pair(i, count + 1));
+					visited[i] = true;
+
 				}
-				else
-					dir = -1;
-
-				break;
-			}
-				
-			if (button[indexP] != -1 || button[indexM] != -1) {
-
-				if (button[indexP] != -1 && button[indexM] != -1) {
-					if (buffDigit / 10 == 0)
-						break;
+				else if (!visited[channel * 10 + i]) {
+					q.push(make_pair(channel * 10 + i, count + 1));
+					visited[channel * 10 + i] = true;
+				}
 					
-					indexP = (input % buffDigit) / (buffDigit / 10);
-					indexM = (input % buffDigit) / (buffDigit / 10);
-					buffDigit = buffDigit / 10;
-				}
-				else {
-					if (button[indexP] == -1) {
-						dir = -1;
-					}
-					else {
-						dir = 1;
-					}
-				}
-			}
-			else {
-				indexP++;
-				indexM--;
-			}
-			
-			
-		}
-
-		//make num
-
-		num = (input / (buffDigit * 10)) * (buffDigit * 10);
-		int index = (input % (buffDigit * 10)) / buffDigit;
-
-		while (true)
-		{
-
-			if (button[index] != -1) {
-				num += index * buffDigit;
-				buffDigit = buffDigit /= 10;
-
-				if (!(buffDigit > 0))
-					break;
-
-				index = (input % buffDigit * 10) / buffDigit;
-
-			}
-			else {
-				index += dir;
 			}
 		}
 
-
-		if (dir > 0)
-			cout << num - input + digitI;
-		else
-			cout << input - num + digitI;
+		if (channel - 1 >= 0) {
+			if (!visited[channel - 1]) {
+				q.push(make_pair(channel - 1, count + 1));
+				visited[channel - 1] = true;
+			}
+		}
+			
+		if (!visited[channel + 1]) {
+			q.push(make_pair(channel + 1, count + 1));
+			visited[channel + 1] = true;
+		}
 	}
+
 	return 0;
 }
