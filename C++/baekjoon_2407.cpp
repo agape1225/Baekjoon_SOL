@@ -10,19 +10,34 @@ string cache[101][101];
 //구글 없이 풀어보자! 화이또
 
 string add(string num1, string num2) {
-	string num = "";
-	int sum = 0;
-	int size = max(num1.size(), num2.size());
+	
+	int i = 0;
+	string ans = "";
+	int buff = 0;
+	int tmp = 0;
 
-	for (int i = 0; i < size || sum; i++) {
-		if (num1.size() > i) sum += num1[i] - '0';
-		if (num2.size() > i) sum += num2[i] - '0';
+	reverse(num1.begin(), num1.end());
+	reverse(num2.begin(), num2.end());
 
-		num += sum % 10 + '0';
-		sum /= 10;
+	while (i < num1.size() || i < num2.size() || tmp) {
+
+		buff = 0;
+
+		if (i < num1.size())
+			buff += num1[i] - '0';
+		if (i < num2.size())
+			buff += num2[i] - '0';
+
+		buff += tmp;
+		tmp = buff / 10;
+		buff = buff % 10;
+
+		ans += to_string(buff);
+		i++;
 	}
-	//reverse(num.begin(), num.end());
-	return num;
+
+	reverse(ans.begin(), ans.end());
+	return ans;
 }
 
 /*string addNum(string s1, string s2) {
@@ -99,7 +114,7 @@ int main(void) {
 		//cout << endl;
 	}
 
-	reverse(cache[n][m].begin(), cache[n][m].end());
+	//reverse(cache[n][m].begin(), cache[n][m].end());
 	cout << cache[n][m];
 
 
