@@ -2,34 +2,35 @@
 
 using namespace std;
 
-int printArr[8];
-int visited[9] = { 0 };
 int N, M;
+int printArr[8];
 
-void inDesc(int count, int start) {
+void solution(int count, int start) {
 
 	if (count < M) {
 
-
 		for (int i = start; i <= N; i++) {
 			printArr[count] = i;
-			inDesc(count + 1, i);
+			solution(count + 1, i);
 		}
 
 	}
 	else {
-		
 		for (int i = 0; i < M; i++) {
-
 			cout << printArr[i] << ' ';
 		}
 		cout << endl;
 	}
+
+
 }
 
 int main(void) {
 
 	cin >> N >> M;
-	inDesc(0, 1);
+
+	solution(0, 1);
+
+	return 0;
 
 }
