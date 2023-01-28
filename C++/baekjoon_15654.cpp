@@ -9,21 +9,17 @@ int printArr[8];
 int visited[8] = { 0 };
 int N, M;
 
-void sequence(int count) {
+void solution(int count) {
 
 	if (count < M) {
-
 		for (int i = 0; i < N; i++) {
-
 			if (!visited[i]) {
 				visited[i] = true;
 				printArr[count] = arr[i];
-				sequence(count + 1);
+				solution(count + 1);
 				visited[i] = false;
 			}
-
 		}
-
 	}
 	else {
 		for (int i = 0; i < M; i++) {
@@ -46,7 +42,7 @@ int main(void) {
 
 	sort(arr.begin(), arr.end());
 
-	sequence(0);
+	solution(0);
 
 	return 0;
 }
