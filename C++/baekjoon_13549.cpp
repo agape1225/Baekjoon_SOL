@@ -4,9 +4,9 @@
 
 using namespace std;
 
-int cache[100001] = { 0 };
 bool visited[100001] = { 0 };
-queue<pair<int, int>> q;
+int cache[100001] = { 0 };
+queue < pair<int, int>> q;
 
 bool check_range(int x) {
 	if (x < 0)
@@ -21,63 +21,67 @@ int main(void) {
 	int N, K;
 	cin >> N >> K;
 
-	visited[N] = true;
 	q.push(make_pair(N, 0));
+	visited[N] = true;
 
 	while (!q.empty()) {
-		
-		int tmp;
-		int num = q.front().first;
-		int time = q.front().second;
+
+		int location		= q.front().first;
+		int time			= q.front().second;
+		int tmp_location	= NULL;
+		int tmp_time		= NULL;
 		q.pop();
 
-		tmp = num + 1;
-		if (check_range(tmp)) {
-			
-			if (visited[tmp]) {						//방문한적 있을 때
-				if (time + 1 < cache[tmp]) {
-					q.push(make_pair(tmp, time + 1));
-					cache[tmp] = time + 1;
+		tmp_location = location + 1;
+		tmp_time = time + 1;
+		if (check_range(tmp_location)) {
+			//방문한적 있을 때
+			if (visited[tmp_location]) {
+				if (cache[tmp_location] > tmp_time) {
+					q.push(make_pair(tmp_location, tmp_time));
+					cache[tmp_location] = tmp_time;
 				}
 			}
-			else {									//방문한적 없을 때
-				q.push(make_pair(tmp, time + 1));
-				cache[tmp] = time + 1;
-				visited[tmp] = true;
+			else {
+				q.push(make_pair(tmp_location, tmp_time));
+				cache[tmp_location] = tmp_time;
+				visited[tmp_location] = true;
 			}
 		}
 
-		tmp = num - 1;
-		if (check_range(tmp)) {
-
-			if (visited[tmp]) {						//방문한적 있을 때
-				if (time + 1 < cache[tmp]) {
-					q.push(make_pair(tmp, time + 1));
-					cache[tmp] = time + 1;
+		tmp_location = location - 1;
+		if (check_range(tmp_location)) {
+			//방문한적 있을 때
+			if (visited[tmp_location]) {
+				if (cache[tmp_location] > tmp_time) {
+					q.push(make_pair(tmp_location, tmp_time));
+					cache[tmp_location] = tmp_time;
 				}
 			}
-			else {									//방문한적 없을 때
-				q.push(make_pair(tmp, time + 1));
-				cache[tmp] = time + 1;
-				visited[tmp] = true;
+			else {
+				q.push(make_pair(tmp_location, tmp_time));
+				cache[tmp_location] = tmp_time;
+				visited[tmp_location] = true;
 			}
 		}
 
-		tmp = num * 2;
-		if (check_range(tmp)) {
-
-			if (visited[tmp]) {						//방문한적 있을 때
-				if (time < cache[tmp]) {
-					q.push(make_pair(tmp, time));
-					cache[tmp] = time;
+		tmp_location = location * 2;
+		tmp_time = time;
+		if (check_range(tmp_location)) {
+			//방문한적 있을 때
+			if (visited[tmp_location]) {
+				if (cache[tmp_location] > tmp_time) {
+					q.push(make_pair(tmp_location, tmp_time));
+					cache[tmp_location] = tmp_time;
 				}
 			}
-			else {									//방문한적 없을 때
-				q.push(make_pair(tmp, time));
-				cache[tmp] = time;
-				visited[tmp] = true;
+			else {
+				q.push(make_pair(tmp_location, tmp_time));
+				cache[tmp_location] = tmp_time;
+				visited[tmp_location] = true;
 			}
 		}
+
 	}
 
 	cout << cache[K];
