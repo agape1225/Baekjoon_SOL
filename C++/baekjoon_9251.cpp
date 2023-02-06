@@ -1,44 +1,33 @@
 #include <iostream>
-#include <algorithm>
 #include <string>
 
 using namespace std;
 
-int cache[1001][1001] = { 0 };
+int cache[10001][1001] = { 0 };
 
 int main(void) {
 
 	string s1, s2;
-
+	int size1, size2;
+	
 	cin >> s1 >> s2;
 
-	int s1Size = s1.size();
-	int s2Size = s2.size();
+	size1 = s1.size();
+	size2 = s2.size();
 
-	for (int i = 1; i <= s2Size; i++) {
-
-		char char2 = s2[i - 1];
-
-		for (int j = 1; j <= s1Size; j++) {
-
-			char char1 = s1[j - 1];
-
-			if (char2 == char1) {
-
-				cache[i][j] = cache[i - 1][j - 1] + 1;
-
+	for (int i = 1; i <= size1; i++) {
+		for (int j = 1; j <= size2; j++) {
+			char standard = s1[i - 1];
+			if (s2[j - 1] == standard) {
+				cache[i][j] = max(cache[i - 1][j - 1] + 1, cache[i - 1][j]);
 			}
 			else {
-
 				cache[i][j] = max(cache[i - 1][j], cache[i][j - 1]);
-
 			}
-
 		}
-
 	}
 
-	cout << cache[s2Size][s1Size];
+	cout << cache[size1][size2];
 
 	return 0;
 
