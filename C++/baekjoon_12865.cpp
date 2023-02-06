@@ -1,46 +1,47 @@
 #include <iostream>
-#include <vector>
 #include <utility>
+#include <vector>
 
 using namespace std;
 
 vector<pair<int, int>> stuff;
 int cache[101][100001] = { 0 };
 
+
 int main(void) {
 
 	int N, K;
-	int buff1, buff2;
-	
+	int W, V;
 	cin >> N >> K;
-
 	for (int i = 0; i < N; i++) {
-		cin >> buff1 >> buff2;
-		stuff.push_back(make_pair(buff1, buff2));
+		cin >> W >> V;
+		stuff.push_back(make_pair(W, V));
 	}
 
-	for (int i = 1; i <= N; i++) {
-
-		int W, V;
-
-		W = stuff[i - 1].first;
-		V = stuff[i - 1].second;
+	for (int i = 0; i < N; i++) {
+		W = stuff[i].first;
+		V = stuff[i].second;
 
 		for (int j = 1; j <= K; j++) {
-
 			if (j - W >= 0) {
-				cache[i][j] = max(cache[i - 1][j], cache[i - 1][j - W] + V);
+				cache[i + 1][j] = max(cache[i][j], cache[i][j - W] + V);
 			}
 			else {
-				cache[i][j] = cache[i - 1][j];
+				cache[i + 1][j] = max(cache[i + 1][j - 1], cache[i][j]);
 			}
 
 		}
-
 	}
-
+	
+	/*for (int i = 0; i <= N; i++) {
+		for (int j = 0; j <= K; j++) {
+			cout << cache[i][j] << ' ';
+		}
+		cout << endl;
+	}*/
+	
 	cout << cache[N][K];
 
-	return 0;
 
+	return 0;
 }
