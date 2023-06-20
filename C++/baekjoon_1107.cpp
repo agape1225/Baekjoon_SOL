@@ -1,70 +1,42 @@
 #include <iostream>
-#include <queue>
-#include <utility>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
-bool remote[10] = { 0 };
-bool visited[500001] = { 0 };
+bool buttons[10] = { 0 };
+
+bool check(int channel) {
+	string ch = to_string(channel);
+
+	for (auto it : ch) {
+		if (buttons[it - '0']) {
+			return false;
+		}
+	}
+	return true;
+}
 
 int main(void) {
-
-	int N, M, buff;
-	int start_num = 100;
-	queue<pair<int, int>> q;
-	
+	int N, M;
 	cin >> N >> M;
 
 	for (int i = 0; i < M; i++) {
+		int buff;
 		cin >> buff;
-		remote[buff] = true;
+		buttons[buff] = true;
 	}
 
-	q.push(make_pair(100, 0));
-	visited[100] = true;
+	int ans = abs(N - 100);
 
-	while (!q.empty()) {
-		
-		int channel = q.front().first;
-		int count = q.front().second;
-		q.pop();
-
-		//cout << channel << endl;
-
-		if (channel == N) {
-			cout << count;
-			return 0;
-		}
-
-		//번호 누르기
-		for (int i = 0; i < 10; i++) {
-			if (remote[i]){
-				if (channel == 100) {
-					q.push(make_pair(i, count + 1));
-					visited[i] = true;
-
-				}
-				else if (!visited[channel * 10 + i]) {
-					q.push(make_pair(channel * 10 + i, count + 1));
-					visited[channel * 10 + i] = true;
-				}
-					
-			}
-		}
-
-		if (channel - 1 >= 0) {
-			if (!visited[channel - 1]) {
-				q.push(make_pair(channel - 1, count + 1));
-				visited[channel - 1] = true;
-			}
-		}
-			
-		if (!visited[channel + 1]) {
-			q.push(make_pair(channel + 1, count + 1));
-			visited[channel + 1] = true;
+	for (int i = 0; i < 1000000; i++) {
+		if (check(i)) {
+			int buff = abs(N - i) + to_string(i).size();
+			ans = min(ans, buff);
 		}
 	}
 
+	cout << ans;
 	return 0;
+
 }
