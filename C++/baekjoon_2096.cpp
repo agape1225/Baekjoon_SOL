@@ -3,41 +3,48 @@
 
 using namespace std;
 
-int cache[100000][3];
-int bord[100000][3];
-int N;
-int max_ans = NULL;
-int min_ans = NULL;
-
 int main(void) {
+
+	int N;
+	int col1, col2, col3;
+	int max_buff1, max_buff2, max_buff3;
+	int min_buff1, min_buff2, min_buff3;
+	int buff1, buff2, buff3;
+	int input1, input2, input3;
 
 	cin >> N;
 
-	for (int i = 0; i < N; i++) {
-		cin >> bord[i][0] >> bord[i][1] >> bord[i][2];
-	}
+	cin >> input1 >> input2 >> input3;
 
-	cache[0][0] = bord[0][0];
-	cache[0][1] = bord[0][1];
-	cache[0][2] = bord[0][2];
+	max_buff1 = min_buff1 = input1;
+	max_buff2 = min_buff2 = input2;
+	max_buff3 = min_buff3 = input3;
 
 	for (int i = 1; i < N; i++) {
-		cache[i][0] = bord[i][0] + max(cache[i - 1][0], cache[i - 1][1]);
-		cache[i][1] = bord[i][1] + max(max(cache[i - 1][2], cache[i - 1][1]), cache[i - 1][0]);
-		cache[i][2] = bord[i][2] + max(cache[i - 1][2], cache[i - 1][1]);
+
+		cin >> col1 >> col2 >> col3;
+
+		buff1 = col1 + max(max_buff1, max_buff2);
+		buff2 = col2 + max(max(max_buff1, max_buff2), max_buff3);
+		buff3 = col3 + max(max_buff3, max_buff2);
+
+		max_buff1 = buff1;
+		max_buff2 = buff2;
+		max_buff3 = buff3;
+
+		//cout << max_buff1 << ' ' <<  max_buff2 << ' ' <<  max_buff3 << endl;
+
+		buff1 = col1 + min(min_buff1, min_buff2);
+		buff2 = col2 + min(min(min_buff1, min_buff2), min_buff3);
+		buff3 = col3 + min(min_buff3, min_buff2);
+
+		min_buff1 = buff1;
+		min_buff2 = buff2;
+		min_buff3 = buff3;
 	}
 
-	max_ans = max(max(cache[N - 1][0], cache[N - 1][1]), cache[N - 1][2]);
-
-	for (int i = 1; i < N; i++) {
-		cache[i][0] = bord[i][0] + min(cache[i - 1][0], cache[i - 1][1]);
-		cache[i][1] = bord[i][1] + min(min(cache[i - 1][2], cache[i - 1][1]), cache[i - 1][0]);
-		cache[i][2] = bord[i][2] + min(cache[i - 1][2], cache[i - 1][1]);
-	}
-
-	min_ans = min(min(cache[N - 1][0], cache[N - 1][1]), cache[N - 1][2]);
-
-	cout << max_ans << ' '  << min_ans;
+	cout << max(max_buff1, max(max_buff2, max_buff3)) << ' ' << min(min_buff1, min(min_buff2, min_buff3));
 
 	return 0;
+
 }
