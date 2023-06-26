@@ -18,20 +18,24 @@ int V, E;
 
 void dijkstra(int start) {
 	priority_queue<pair<int, int>> pq;
-	ans[start] = 0;
 	pq.push(make_pair(0, start));
+	ans[start] = 0;
 
 	while (!pq.empty()) {
-		int current = pq.top().second;
-		int distance = -pq.top().first;
+		int current_node = pq.top().second;
+		int current_distance = -pq.top().first;
+
 		pq.pop();
 
-		for (int i = 0; i < graph[current].size(); i++) {
-			int next = graph[current][i].first;
-			int next_distance = graph[current][i].second + distance;
-			if (ans[next] > next_distance) {
-				ans[next] = next_distance;
-				pq.push(make_pair(-next_distance, next));
+		for (int i = 0; i < graph[current_node].size(); i++) {
+
+			int next_node = graph[current_node][i].first;
+			int next_distance = current_distance + graph[current_node][i].second;
+
+			if (next_distance < ans[next_node]) {
+
+				ans[next_node] = next_distance;
+				pq.push(make_pair(-next_distance, next_node));
 			}
 		}
 	}
@@ -54,14 +58,11 @@ int main(void) {
 		graph[buff1].push_back(make_pair(buff2, buff3));
 	}
 
-
-
 	for (int i = 1; i <= V; i++) {
 		ans[i] = INF;
 	}
 
 	dijkstra(start);
-
 
 	for (int i = 1; i <= V; i++) {
 		if (ans[i] >= INF)
@@ -71,5 +72,4 @@ int main(void) {
 	}
 
 	return 0;
-
 }
