@@ -1,65 +1,66 @@
 #include <iostream>
-#include <algorithm>
 #include <queue>
-#include <vector>
 
 using namespace std;
 
-int n, k;
-int sec = 0;	//가장빠른시간을 저장할 변수
-bool visited[100001];	//방문여부를 저장할 배열
-int cnt = 0;	//빠른시간으로 동생을 찾는 방법의 개수
+bool visited[100001] = { 0 };
 
-void bfs()
-{
-	queue<pair<int, int>>q;	//queue 선언 pair의 first는 현재위치, second는 이동에따른 시간을 저장
-	q.push(make_pair(n, 0));	//시작위치와 0초를 push
-	visited[n] = true;	//방문표시
+int main(void) {
+	int N, K;
+	queue<pair<int, int>> q;
 
-	while (!q.empty())
-	{
-		int a = q.front().first;	//queue의 front값을 저장
-		int b = q.front().second;
+	int		ans_count	= NULL;
+	int		ans_case	= 0;
+	bool	ans_dir		= false;
 
-		q.pop();	//저장한 값을 queue에서 삭제
-		visited[a] = true;	//방문표시
+	cin >> N >> K;
 
-		if (sec == 0 && a == k)	//sec가 0이며, a == k인 경우는 처음으로 목적지에 도착한 경우
-		{
-			sec = b;	//걸린시간을 sec에 저장
-			cnt++;	//방법개수 증가
-		}
-		else if (b == sec && a == k)	//목적지에 도착한 시간이 sec와 같으면서 목적지에 도착한 경우
-		{
-			cnt++;	//방법개수 증가
-		}
-		else if (sec != 0 && sec < b)	//sec가 저장되어있는데 sec보다 걸리시간이 더 큰 경우라면 continue
+	visited[N] = true;
+	q.push(make_pair(0, N));
+
+	while (!q.empty()) {
+
+		int count = q.front().first;
+		int current = q.front().second;
+		q.pop();
+
+		visited[current] = true;
+
+		//cout << count << ' ' << current << endl;
+
+		if (ans_dir && count > ans_count)
 			continue;
+		
+		if (current == K && !ans_dir) {
+			ans_dir = true;
+			ans_case++;
+			ans_count = count;
+			continue;
+		}
 
+		if (ans_dir && current == K && ans_count == count) {
+			ans_case++;
+			continue;
+		}
 
-		if (a + 1 <= 100001 && visited[a + 1] != true)	//a+1 이동한 경우
-			q.push(make_pair(a + 1, b + 1));	//queue에 a+1과 b+1을 push, b는 시간
-		if (a - 1 >= 0 && visited[a - 1] != true)	//a-1 이동한경우, 0일경우도 있기때문에 0까지 확인
-			q.push(make_pair(a - 1, b + 1));
-		if (a * 2 <= 100001 && visited[a * 2] != true)	//a*2 순간이동한경우
-			q.push(make_pair(a * 2, b + 1));
+		if(current + 1 < 100001 && !visited[current + 1]){
+			q.push(make_pair(count + 1, current + 1));
+			//visited[current + 1] = true;
+		}
 
+		if (current - 1 >= 0 && !visited[current - 1]) {
+			q.push(make_pair(count + 1, current - 1));
+			//visited[current - 1] = true;
+		}
+
+		if (current * 2 < 100001 && !visited[current * 2]) {
+			q.push(make_pair(count + 1, current * 2));
+			//visited[current * 2] = true;
+		}
 	}
 
-}
-
-int main()
-{
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	cin >> n >> k;	//n과 k 입력
-
-	bfs();	//bfs 탐색
-
-	cout << sec << '\n';	//결과출력
-	cout << cnt;
+	cout << ans_count << endl << ans_case;
 
 	return 0;
+
 }
