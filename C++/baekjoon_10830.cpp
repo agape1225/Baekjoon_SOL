@@ -32,6 +32,7 @@ int main() {
 		}
 		result[i][i] = 1;
 	}
+
 	while (b) {
 		if (b % 2 == 1) {
 			solved(result, arr);
