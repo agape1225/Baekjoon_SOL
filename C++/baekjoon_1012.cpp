@@ -1,125 +1,74 @@
 #include <iostream>
 #include <queue>
-#include <stack>
-#include <cstdio>
-
-#define SIZE 50
 
 using namespace std;
 
-typedef struct Point {
-	int row;
-	int col;
-} Point;
+int dir_x[4] = { 0, 1, 0, -1 };
+int dir_y[4] = { 1, 0, -1, 0 };
 
-bool checkRange(int row, int col) {
-	if ((row > -1 && row < 50) && (col > -1 && col < 50))
-		return true;
-	else
+int M, N, K;
+bool arr[51][51] = { 0 };
+
+bool check_range(int x, int y) {
+	if (x < 0 || x >= M || y < 0 || y >= N)
 		return false;
-}
 
-void checkField(int field[SIZE][SIZE], int row, int col) {
-	queue<Point> locate;
-	//stack<Point> locate;
-	Point loc;
-	loc.row = row;
-	loc.col = col;
-	locate.push(loc);
-	field[row][col] = false;
-
-	while (!locate.empty()) {
-
-		Point current = locate.front();
-		locate.pop();
-
-		if (checkRange(current.row - 1, current.col) == true && field[current.row - 1][current.col] == 1) {
-			Point buff;
-			buff.row = current.row - 1;
-			buff.col = current.col;
-			field[current.row - 1][current.col] = 0;
-			locate.push(buff);
-		}
-
-		if (checkRange(current.row + 1, current.col) == true && field[current.row + 1][current.col] == 1) {
-			Point buff;
-			buff.row = current.row + 1;
-			buff.col = current.col;
-			field[current.row + 1][current.col] = 0;
-			locate.push(buff);
-		}
-
-		if (checkRange(current.row, current.col + 1) == true && field[current.row][current.col + 1] == 1) {
-			Point buff;
-			buff.row = current.row;
-			buff.col = current.col + 1;
-			field[current.row][current.col + 1] = 0;
-			locate.push(buff);
-		}
-
-		if (checkRange(current.row , current.col - 1) == true && field[current.row][current.col - 1] == 1) {
-			Point buff;
-			buff.row = current.row;
-			buff.col = current.col - 1;
-			field[current.row][current.col - 1] = 0;
-			locate.push(buff);
-		}
-	}
-}
-
-void printArr(int arr[SIZE][SIZE], int row, int col) {
-	
-	cout << endl;
-
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col; j++) {
-			//cout << dec << arr[i][j] << " ";
-			printf("%d ", arr[i][j]);
-		}
-		cout << endl;
-	}
-
-	cout << endl;
+	return arr[x][y];
 }
 
 int main(void) {
 	int T;
-	int field[SIZE][SIZE];
-	
-
 	cin >> T;
 
-	for (int i = 0; i < T; i++) {
-		int row, col, num;
+	for (int t = 0; t < T; t++) {
+
+		int row, col;
 		int count = 0;
-		cin >> row >> col >> num;
+		queue<pair<int, int>> q;
 
-		for (int j = 0; j < row; j++) {
-			for (int k = 0; k < col; k++)
-				field[j][k] = -1;
+		cin >> M >> N >> K;
+		
+		for (int i = 0; i < K; i++) {
+			cin >> row >> col;
+			arr[row][col] = 1;
 		}
 
-		for (int j = 0; j < num; j++) {
-			int buffRow, buffCol;
-			cin >> buffRow >> buffCol;
-			field[buffRow][buffCol] = 1;
-		}
+		//전체 탐색 시작
+		for (int i = 0; i < M; i++) {
+			for (int j = 0; j < N; j++) {
 
-		//printArr(field, row, col);
-
-		for (int j = 0; j < row; j++) {
-			for (int k = 0; k < col; k++) {
-				if (field[j][k] == 1) {
-					checkField(field, j, k);
+				//BFS 시작
+				if (arr[i][j] == 1) {
 					count++;
-					//printArr(field, row, col);
+
+					//방문처리
+					arr[i][j] = 0;
+					q.push(make_pair(i, j));
+
+					while (!q.empty()) {
+						int current_x = q.front().first;
+						int current_y = q.front().second;
+						q.pop();
+
+						for (int k = 0; k < 4; k++) {
+							int next_x = current_x + dir_x[k];
+							int next_y = current_y + dir_y[k];
+
+							if (check_range(next_x, next_y)) {
+								//방문처리
+								arr[next_x][next_y] = 0;
+								//queue에 push
+								q.push(make_pair(next_x, next_y));
+							}
+						}
+
+					}
+
 				}
+
 			}
-
 		}
-
 		cout << count << endl;
-
 	}
 
 	return 0;
