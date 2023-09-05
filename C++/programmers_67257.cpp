@@ -7,25 +7,31 @@ using namespace std;
 
 string cal_ans(string exp, string priority) {
     string exp_tmp = exp;
+    cout << exp << endl;
     for (auto it : priority) {
         for (int i = 0; i < exp_tmp.size(); i++) {
             if (exp_tmp[i] == it) {
+                if (exp_tmp[i] == '-' && i >= 1 && exp_tmp[i - 1] == '(')
+                    continue;
+                cout << it << ' ' << i << ' ';
                 string num1 = "";
                 string num2 = "";
 
-                int index1 = i - 1;
-                int index2 = i + 1;
+                int index1 = i - 2;
+                int index2 = i + 2;
 
-                while (index1 >= 0 && exp_tmp[index1] >= '0' && exp_tmp[index1] <= '9') {
+                while (index1 >= 0 && ((exp_tmp[index1] >= '0' && exp_tmp[index1] <= '9') || exp_tmp[index1] == '-')) {
                     num1 = exp_tmp[index1] + num1;
                     index1--;
                 }
 
                 while (index2 < exp_tmp.size()
-                    && exp_tmp[index2] >= '0' && exp_tmp[index2] <= '9') {
+                    && ((exp_tmp[index2] >= '0' && exp_tmp[index2] <= '9') || exp_tmp[index2] == '-')) {
                     num2 += exp_tmp[index2];
                     index2++;
                 }
+
+                cout << num1 << ' ' << num2 << ' ';
 
                 string ans;
 
@@ -38,30 +44,47 @@ string cal_ans(string exp, string priority) {
                 else if (it == '-') {
                     ans = to_string(stoll(num1) - stoll(num2));
                 }
-
-                exp_tmp = exp_tmp.substr(0, index1 + 1) + ans + exp_tmp.substr(index2, exp_tmp.size() - index2 - 1);
+                
+                exp_tmp = exp_tmp.substr(0, index1 + 1) + ans + exp_tmp.substr(index2, exp_tmp.size() - index2);
+                cout << ' ' << exp_tmp << endl;
+                i = 0;
             }
         }
-        cout << it << ' ' << exp_tmp << endl;
+       
+    }
+    cout << exp_tmp.substr(1, exp_tmp.size() - 3) << endl;
+    
+    return exp_tmp.substr(1, exp_tmp.size() - 3);
+}
+
+string add_bracket(string expression) {
+    string exp_tmp = "";
+    for (int i = 0; i < expression.size(); i++) {
+        if (expression[i] >= '0' && expression[i] <= '9') {
+            string num = "";
+
+            while (i < expression.size()
+                && expression[i] >= '0' && expression[i] <= '9') {
+                num += expression[i];
+                i++;
+            }
+
+            string ans = "(" + num + ")";
+            exp_tmp += ans + expression[i];
+        }
     }
     return exp_tmp;
 }
 
-//구현 + 문자열
 long long solution(string expression) {
     long long answer = 0;
     vector<string> priority = { "*+-", "*-+", "+-*", "+*-", "-+*", "-*+" };
 
+    expression = add_bracket(expression);
+
     for (auto it : priority) {
-        answer = max(answer, stoll(cal_ans(expression, it)));
+        answer = max(answer, abs(stoll(cal_ans(expression, it))));
     }
 
-    //1. 우선순위 만들기
-    //2. 계산
     return answer;
-}
-
-int main(void) {
-    solution("100-200*300-500+20");
-    return 0;
 }
