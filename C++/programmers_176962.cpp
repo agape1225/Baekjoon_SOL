@@ -24,51 +24,56 @@ vector<string> solution(vector<vector<string>> plans) {
 
     stable_sort(plans.begin(), plans.end(), compare);
 
-    // for(auto it : plans){
-    //     cout << it[0] << ' ' << it[1] << endl;
-    // }
-
+    //할만 하다
     s.push(0);
 
-    for (int i = 1; i < plans.size(); i++) {
-        if (s.empty()) {
-            s.push(i);
-        }
-        else {
-            int index = s.top();
-            int stack_min = get_mins(plans[index][1], plans[index][2]);
-            int next_min = get_mins(plans[i][1], "0");
-            cout << stack_min << ' ' << next_min << endl;
-            while (stack_min <= next_min) {
+    for (int i = 0; i < plans.size(); i++) {
+        int current_index = s.top();
+        int next_index = i;
 
-                cout << i << ' ' << next_min << ' ' << get_mins(plans[index][1], "0") << ' ' << endl;
+        int current_min = get_mins(plans[current_index][1], plans[current_index][2]);
+        int next_min = get_mins(plans[next_index][1], "0");
 
-                plans[index][2] = to_string(stoi(plans[index][2]) - (next_min - get_mins(plans[index][1], "0")));
+        //시작시간이 더 크면 -> 이부분이 잘 해결되어야함
+        if (current_min <= next_min) {
+            //top의 시작시간 부터 끝시간까지가 남은 시간
+            int remain_time = get_mins(plans[current_index][1], "0") - current_min;
+            int taken_time = stoi(plans[current_index][2]);
 
-                answer.push_back(plans[index][0]);
+            while (remain_time - taken_time >= 0) {
+                answer.push_back(plans[current_index][0]);
                 s.pop();
 
-                if (!s.empty()) {
-                    index = s.top();
-                    stack_min = get_mins(plans[index][1], plans[index][2]);
-                }
-                else
+                if (!s.empty())
                     break;
 
+                current_index = s.top();
+                remain_time -= taken_time;
+                taken_time = stoi(plans[current_index][2]);
             }
-            plans[index][2] = to_string(stoi(plans[index][2]) - (next_min - get_mins(plans[index][1], "0")));
-            s.push(i);
+
+            if (!s.empty()) {
+                plans[current_index][2] = to_string(taken_time - remain_time);
+            }
+
+            s.push(next_index);
+
         }
+        //시작시간이 더 작으면
+        else {
+            //지금까지 진행된 시간을 작업량에서 빼준다.
+            int gap = next_min - get_mins(plans[current_index][1], "0");
+            plans[current_index][2] = to_string(
+                stoi(plans[current_index][2]) - gap
+
+            );
+            s.push(next_index);
+
+        }
+
+
+
     }
-
-    while (!s.empty()) {
-        answer.push_back(plans[s.top()][0]);
-        s.pop();
-    }
-
-
-
-    //cout << ("11:40" < "12:10");
 
     return answer;
 }
