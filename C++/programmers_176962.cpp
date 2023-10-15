@@ -20,60 +20,39 @@ int get_mins(string time, string min) {
 vector<string> solution(vector<vector<string>> plans) {
 
     vector<string> answer;
-    stack<int> s;
+    stack<pair<int, int>> s;
 
     stable_sort(plans.begin(), plans.end(), compare);
+    for (int i = 0; i < plans.size() - 1; i++) {
+        s.push(make_pair(i, stoi(plans[i][2])));
+        int gap = get_mins(plans[i + 1][1], "0") - get_mins(plans[i][1], "0");
 
-    //할만 하다
-    s.push(0);
+        while (!s.empty() && gap != 0) {
+            int current_name = s.top().first;
+            int current_time = s.top().second;
 
-    for (int i = 0; i < plans.size(); i++) {
-        int current_index = s.top();
-        int next_index = i;
+            s.pop();
+            if (current_time <= gap) {
 
-        int current_min = get_mins(plans[current_index][1], plans[current_index][2]);
-        int next_min = get_mins(plans[next_index][1], "0");
+                gap -= current_time;
+                answer.push_back(plans[current_name][0]);
 
-        //시작시간이 더 크면 -> 이부분이 잘 해결되어야함
-        if (current_min <= next_min) {
-            //top의 시작시간 부터 끝시간까지가 남은 시간
-            int remain_time = get_mins(plans[current_index][1], "0") - current_min;
-            int taken_time = stoi(plans[current_index][2]);
+                //current_name = s.top().first;
+                //current_time = s.top().second;
 
-            while (remain_time - taken_time >= 0) {
-                answer.push_back(plans[current_index][0]);
-                s.pop();
-
-                if (!s.empty())
-                    break;
-
-                current_index = s.top();
-                remain_time -= taken_time;
-                taken_time = stoi(plans[current_index][2]);
             }
-
-            if (!s.empty()) {
-                plans[current_index][2] = to_string(taken_time - remain_time);
+            else {
+                s.push(make_pair(current_name, current_time - gap));
+                gap = 0;
             }
-
-            s.push(next_index);
-
         }
-        //시작시간이 더 작으면
-        else {
-            //지금까지 진행된 시간을 작업량에서 빼준다.
-            int gap = next_min - get_mins(plans[current_index][1], "0");
-            plans[current_index][2] = to_string(
-                stoi(plans[current_index][2]) - gap
-
-            );
-            s.push(next_index);
-
-        }
-
-
 
     }
+    answer.push_back(plans[plans.size() - 1][0]);
 
+    while (!s.empty()) {
+        answer.push_back(plans[s.top().first][0]);
+        s.pop();
+    }
     return answer;
 }
