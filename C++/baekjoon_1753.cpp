@@ -1,89 +1,56 @@
 #include <iostream>
-#include <utility>
 #include <vector>
 #include <queue>
-#include <set>
 
-#define SIZE 20001
-#define MAX 999999999
+#define INF 987654321
 
 using namespace std;
 
+vector<pair<int, int>> nodes[20001];
+int cache[20001];
+
 int main(void) {
+	int K, V, E;
+	int u, v, w;
+	priority_queue<pair<int, int>> pq;
 
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-
-	int V, E, start;
-	vector < pair<int, int>> graph[SIZE];
-	//multiset<pair<int, int>> pq;
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-
-	bool visited[SIZE] = { 0 };
-	int cost[SIZE] = { 0 };
-
-	int buff1, buff2, buff3;
-
-	cin >> V >> E;
-	cin >> start;
+	cin >> V >> E >> K;
 
 	for (int i = 0; i < E; i++) {
-		
-		cin >> buff1 >> buff2 >> buff3;
-		graph[buff1].push_back(make_pair(buff3, buff2));
-
+		cin >> u >> v >> w;
+		nodes[u].push_back(make_pair(v, w));
 	}
 
 	for (int i = 1; i <= V; i++) {
-		cost[i] = MAX;
+		cache[i] = INF;
 	}
 
-	//pq.insert(make_pair(0,start));
-	pq.push(make_pair(0, start));
-	cost[start] = 0;
+	cache[K] = 0;
+	pq.push(make_pair(0, K));
 
 	while (!pq.empty()) {
-
-		//pair<int, int> buff = (*pq.begin());
-		pair<int, int> buff = pq.top();
-		//pq.erase(pq.begin());
+		int current_node = pq.top().second;
+		int current_cost = -pq.top().first;
 		pq.pop();
 
-		if (!visited[buff.second]) {
+		for (auto it : nodes[current_node]) {
+			int next_cost = cache[current_node] + it.second;
+			int next_node = it.first;
 
-			visited[buff.second] = true;
-			cost[buff.second] = buff.first;
-
-			for (auto it = graph[buff.second].begin(); it != graph[buff.second].end(); it++) {
-
-				int cost_buff = buff.first + (*it).first;
-
-				if (!visited[(*it).second] && cost[(*it).second] > cost_buff) {
-
-					cost[(*it).second] = cost_buff;
-					//pq.insert(make_pair(cost_buff, (*it).second));
-					pq.push(make_pair(cost_buff, (*it).second));
-
-				}
-
+			if (cache[next_node] > next_cost) {
+				cache[next_node] = next_cost;
+				pq.push(make_pair(-next_cost, next_node));
 			}
 
-
 		}
-
 	}
 
 	for (int i = 1; i <= V; i++) {
-
-		if (cost[i] == MAX)
-			cout << "INF";
+		if (cache[i] == INF)
+			cout << "INF" << '\n';
 		else
-			cout << cost[i];
-		cout <<  '\n';
+			cout << cache[i] << '\n';
 	}
 
 	return 0;
-
 }
