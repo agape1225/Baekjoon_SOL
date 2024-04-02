@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "map": "cpp",
+        "set": "cpp"
     }
 }
