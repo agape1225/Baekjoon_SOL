@@ -37,12 +37,12 @@ bool check_condition2(string str){
             max_count = 1;
             prev_vowel = current_vowel;
         }
+
+        if(max_count > 2)
+            return false;
         
     }
-    if(max_count > 2){
-        return false;
-    }else
-        return true;
+    return true;
 }
 
 bool check_condition3(string str){
@@ -62,10 +62,7 @@ bool check_condition3(string str){
 }
 
 int main(void){
-    // vector<string> vowel = ["a","e","i","o","u"];
-    
     string input;
-    // cin >> input;
 
     while(true){
         cin >> input;
@@ -75,20 +72,12 @@ int main(void){
 
         bool ans = false;
 
-        //1번 조건 탐색
-        //2번 조건 탐색
-        //3번 조건 탐색
-
         cout << "<" << input << "> ";
 
-        // cout << check_condition1(input) << endl;
-        // cout << check_condition2(input) << endl;
-        // cout << check_condition3(input) << endl;
-
         if(check_condition1(input) && check_condition2(input) && check_condition3(input)){
-            cout << "is acceptable.";
+            cout << "is acceptable." << endl;
         }else{
-            cout << "is not acceptable.";
+            cout << "is not acceptable." << endl;
         }
 
     }
