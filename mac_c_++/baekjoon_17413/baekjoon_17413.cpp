@@ -18,7 +18,7 @@ vector<pair<int, int>> get_word_pos(string S){
 
     for(int i = 0; i < S.size(); i++){
 
-        if(is_char(S[i]) && !is_tag){
+        if(is_char(S[i]) && !is_tag){  
                 if(!mid_of_word){
                 start_index = i;
                 mid_of_word = true;
