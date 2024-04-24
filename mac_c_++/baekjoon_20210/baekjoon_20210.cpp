@@ -65,11 +65,10 @@ bool get_str_result(string s1, string s2){
         if(s1[i] != s2[i])
             return s1[i] < s2[i];
     }
+
 }
 
 bool get_comp(string s1, string s2){
-
-    // cout << s1 << ' ' << s2 << endl;
 
     bool s1_result = is_alpha(s1);
     bool s2_result = is_alpha(s2);
@@ -88,37 +87,17 @@ bool get_comp(string s1, string s2){
     string s1_no_zero = get_no_zero(s1);
     string s2_no_zero = get_no_zero(s2);
 
-    // cout << s1 << ' ' << s2 << ' ' << s1_no_zero << ' ' << s2_no_zero << endl;
-
     if(s1_no_zero != s2_no_zero){
-        // cout << (s1 < s2) << endl;
         return get_str_result(s1_no_zero, s2_no_zero);
     }
     else{
         int s1_count = count_zero(s1);
         int s2_count = count_zero(s2);
-    //     // cout << 
         return s1_count < s2_count;
     }
-
-    // long long s1_long = stoll(s1);
-    // long long s2_long = stoll(s2);
-
-
-
-    // if(s1_long == s2_long){
-    //     int s1_count = count_zero(s1);
-    //     int s2_count = count_zero(s2);
-    //     // cout << 
-    //     return s1_count < s2_count;
-    // }else{
-    //     // cout << s1_long << ' ' << s2_long << (s1_long < s2_long) << endl;
-    //     return s1_long < s2_long;
-    // }
 }
 
 bool compare(string s1, string s2){
-    //s1이 s2보다 작으면 true
     vector<string> s1_arr = get_arr(s1);
     vector<string> s2_arr = get_arr(s2);
 
@@ -126,11 +105,11 @@ bool compare(string s1, string s2){
 
     for(int i = 0; i < size; i++){
         if(s1_arr[i] != s2_arr[i]){
-            // cout << s1_arr[i] << ' ' << s2_arr[i] << endl << endl << (s1_arr[i] < s2_arr[i]) << endl << typeid(s1_arr[i]).name();
             bool comp_result = get_comp(s1_arr[i] ,s2_arr[i]);
             return comp_result;
         }
     }
+    return s1 < s2;
 }
 
 int main(void){
@@ -150,26 +129,6 @@ int main(void){
     for(auto it : str){
         cout << it << '\n';
     }
-
-    // string a = "1";
-    // string b = "00012";
-
-    // cout << (a > b) << endl;
-    // cout << typeid(b).name() << endl << endl;
-
-    // vector<string> tmp = get_arr("Foo00012Bar");
-
-    // for(auto it : tmp){
-    //     cout << it << ' ';
-    // }
-
-    // tmp = get_arr("Foo1Bar");
-
-    // for(auto it : tmp){
-    //     cout << it << ' ';
-    // }
-
-    // cout << endl << compare("Foo12Bar", "Foo3Bar");
 
     return 0;
 
