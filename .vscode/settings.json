@@ -5,6 +5,9 @@
         "__bit_reference": "cpp",
         "vector": "cpp",
         "string": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "limits": "cpp",
+        "ratio": "cpp",
+        "ostream": "cpp"
     }
 }
