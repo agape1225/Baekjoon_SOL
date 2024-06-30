@@ -5,8 +5,8 @@ using namespace std;
 
 int main(void)
 {
-    int cost[3][105];
-    int cache[3][105];
+    int cost[3][1005];
+    int cache[3][1005];
     int N;
 
     cin >> N;
