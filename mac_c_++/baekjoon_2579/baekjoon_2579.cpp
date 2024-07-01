@@ -5,26 +5,26 @@
 using namespace std;
 
 int main(void){
-    vector<int> stares;
+    vector<int> stairs;
     vector<int> cache;
-    int N, stare;
+    int N, s;
     cin >> N;
 
     for(int i = 0; i < N; i++){
         // int stare;
-        cin >> stare;
-        stares.push_back(stare);
-        cache.push_back(stare);
+        cin >> s;
+        stairs.push_back(s);
+        cache.push_back(s);
     }
 
     for(int i = 1; i < N; i++){
         if(i == 1){
-            cache[i] = stares[i] + cache[i - 1];
+            cache[i] = stairs[i] + cache[i - 1];
         }
         else if(i == 2){
-            cache[i] = max(stares[i - 1], cache[i - 2]) + stares[i];
+            cache[i] = max(stairs[i - 1], cache[i - 2]) + stairs[i];
         }else{
-            cache[i] = max(cache[i - 3] + stares[i - 1], cache[i - 2]) + stares[i];
+            cache[i] = max(cache[i - 3] + stairs[i - 1], cache[i - 2]) + stairs[i];
         }
     }
 
