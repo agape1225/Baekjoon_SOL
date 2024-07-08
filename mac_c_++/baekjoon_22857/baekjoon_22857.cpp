@@ -1,49 +1,50 @@
 #include <iostream>
-
+#include <algorithm>
 using namespace std;
+
+int S[50005];
+int cache[50005][105] = {0};
 
 int main(void){
     int N, K;
-    int S[50005];
-    int cache[50005];
+    
+    int ans = -1;
     cin >> N >> K;
 
     for(int i = 0; i < N; i++){
         cin >> S[i];
     }
 
-    if(S[0] % 2)
-        cache[0] = 0;
-    else
-        cache[0] = 1;
+    for(int i = 0; i < N; i++){
+        bool is_even = S[i] % 2 == 0;
+        for(int j = 0; j <= K; j++){
 
-    for(int i = 1; i < N; i++){
-
-        bool is_num_even = S[i] % 2 == 0;
-        bool is_prev_even = S[i - 1] % 2 == 0;
-
-        if(is_num_even){
-            if(is_prev_even){
-                cache[i] = cache[i - 1] + 1;
-            }else{
-                cache[i] = 1;
+            if(is_even){
+                cache[i][j] = cache[i - 1][j] + 1;
             }
-        }else{
-            if(is_prev_even){
-                cache[i] = cache[i - 1];
-            }else{
-                cache[i] = 0;
+            
+            if(j != 0 && !is_even){
+                cache[i][j] = cache[i - 1][j - 1];
             }
+
+            
+            
         }
     }
 
-    for(int i = 0; i < N; i++)
-        cout << S[i] << ' ';
-    cout << endl;
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < K; j++){
 
-    for(int i = 0; i < N; i++)
-        cout << cache[i] << ' ';
-    cout << endl; 
+            ans = max(ans, cache[i][j]);
+
+            
+            
+        }
+    }
+    
+    
+    cout << ans;
+
 
     return 0;
 
