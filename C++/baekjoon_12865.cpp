@@ -18,27 +18,15 @@ int main(void) {
 		stuff.push_back(make_pair(W, V));
 	}
 
-	for (int i = 0; i < N; i++) {
-		W = stuff[i].first;
-		V = stuff[i].second;
-
-		for (int j = 1; j <= K; j++) {
-			if (j - W >= 0) {
-				cache[i + 1][j] = max(cache[i][j], cache[i][j - W] + V);
+	for(int i = 1; i <= N; i++){
+		W = stuff[i - 1].first;
+		V = stuff[i - 1].second;
+		for(int j = V; j < K; j++){
+			if(j % V == 0){
+				cache[i][j] = max()
 			}
-			else {
-				cache[i + 1][j] = max(cache[i + 1][j - 1], cache[i][j]);
-			}
-
 		}
 	}
-	
-	/*for (int i = 0; i <= N; i++) {
-		for (int j = 0; j <= K; j++) {
-			cout << cache[i][j] << ' ';
-		}
-		cout << endl;
-	}*/
 	
 	cout << cache[N][K];
 
