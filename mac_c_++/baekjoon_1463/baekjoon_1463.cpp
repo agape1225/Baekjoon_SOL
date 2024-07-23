@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+
 using namespace std;
 
 int main(void){
@@ -10,17 +11,19 @@ int main(void){
     cache[1] = 0;
 
     for(int i = 2; i <= N; i++){
-        int num1, num2, num3;
-        num1 = cache[i - 1];
-        num2 = 1000001;
-        num3 = 1000001;
-        if(i / 2 >= 1 && i % 2 == 0){
-            num2 = cache[i / 2];
-        }else if(i / 3 >= 1 && i % 3 == 0){
-            num3 = cache[i / 3];
+        int tmp = 1000001;
+        if(i % 3 == 0){
+            tmp = cache[i / 3] + 1;
         }
 
-        cache[i] = min(num1, min(num2, num3)) + 1;
+        if(i % 2 == 0){
+            tmp = min(cache[i / 2] + 1, tmp);
+        }
+
+        tmp = min(tmp, cache[i - 1] + 1);
+
+        cache[i] = tmp;
+
     }
 
     cout << cache[N];
