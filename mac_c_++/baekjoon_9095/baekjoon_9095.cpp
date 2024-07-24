@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <algorithm>
 using namespace std;
 
 int main(void){
@@ -10,6 +10,8 @@ int main(void){
         int N;
         int cache[11];
         cin >> N;
+
+        //이 부분만 풀어야한다.
         cache[1] = 1;
         cache[2] = 2;
         cache[3] = 4;
