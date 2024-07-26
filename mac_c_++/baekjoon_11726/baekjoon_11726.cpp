@@ -1,21 +1,22 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 int main(void){
-    int cache[1005];
-    int n;
+    int cache[1005] = {0};
+    int N;
 
-    cin >> n;
+    cin >> N;
 
-    cache[0] = 1;
-    cache[1] = 2;
+    cache[1] = 1;
+    cache[2] = 2;
 
-    for(int i = 2; i < n; i++){
+    for(int i = 3; i <= N; i++){
         cache[i] = (cache[i - 1] + cache[i - 2]) % 10007;
     }
 
-    cout << cache[n - 1];
+    cout << cache[N];
 
     return 0;
 }
