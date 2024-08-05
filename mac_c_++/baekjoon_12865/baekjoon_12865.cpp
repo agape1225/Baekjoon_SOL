@@ -21,11 +21,12 @@ int main(void) {
 	for(int i = 1; i <= N; i++){
 		W = stuff[i - 1].first;
 		V = stuff[i - 1].second;
+
 		for(int j = 1; j <= K; j++){
-			if(j >= W){
-				cache[i][j] = max(cache[i - 1][j] , cache[i - 1][j - W] + V);
+			if(j - W >= 0){
+				cache[i][j] = max(cache[i - 1][j], cache[i - 1][j - W] + V);
 			}else{
-				cache[i][j] =cache[i - 1][j];
+				cache[i][j] = cache[i - 1][j];
 			}
 		}
 	}
