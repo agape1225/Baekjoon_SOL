@@ -4,29 +4,31 @@
 using namespace std;
 
 int main(void){
-    int N;
-    int cache[1000001];
-    cin >> N;
 
+    int cache[100005] = {0};
+    int N;
+
+    cin >> N;
     cache[1] = 0;
 
-    for(int i = 2; i <= N; i++){
-        int tmp = 1000001;
+    for(int i = 2; i <= N; i++ ){
+        int tmp = cache[i - 1] + 1;
+
         if(i % 3 == 0){
-            tmp = cache[i / 3] + 1;
+            tmp = min(tmp, cache[i / 3] + 1);
         }
 
         if(i % 2 == 0){
-            tmp = min(cache[i / 2] + 1, tmp);
+            tmp = min(tmp, cache[i / 2] + 1);
         }
 
-        tmp = min(tmp, cache[i - 1] + 1);
+        // cout << i << " : " << tmp << endl;
 
         cache[i] = tmp;
-
     }
 
     cout << cache[N];
 
     return 0;
+
 }
