@@ -4,27 +4,22 @@
 using namespace std;
 
 int main(void){
-
+    int stare[301] = {0};
+    int cache[301] = {0};
     int N;
-    int cache[305] = {0};
-    int stairs[305] = {0};
 
     cin >> N;
 
     for(int i = 0; i < N; i++){
-        cin >> stairs[i];
+        cin >> stare[i];
     }
 
-    cache[0] = stairs[0];
-    
-    for(int i = 1; i < N; i++){
-        if(i == 1){
-            cache[i] = stairs[i] + stairs[i - 1];
-        }
-        else if(i == 2)
-            cache[i] = max(stairs[i - 1], stairs[i - 2]) + stairs[i];
-        else
-            cache[i] = max(cache[i - 2], stairs[i - 1] + cache[i - 3]) + stairs[i];
+    cache[0] = stare[0];
+    cache[1] = stare[0] + stare[1];
+    cache[2] = max(stare[0], stare[1]) + stare[2];
+
+    for(int i = 3; i < N; i++){
+        cache[i] = max(cache[i - 3] + stare[i - 1], cache[i - 2] ) + stare[i];
     }
 
     cout << cache[N - 1];
