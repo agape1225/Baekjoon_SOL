@@ -5,18 +5,18 @@ using namespace std;
 
 int main(void){
     int cache[1005] = {0};
-    int N;
+    int n;
 
-    cin >> N;
+    cin >> n;
 
-    cache[1] = 1;
-    cache[2] = 2;
+    cache[0] = 1;
+    cache[1] = 2;
 
-    for(int i = 3; i <= N; i++){
+    for(int i = 2; i < n; i++){
         cache[i] = (cache[i - 1] + cache[i - 2]) % 10007;
     }
 
-    cout << cache[N];
+    cout << cache[n - 1];
 
     return 0;
 }
