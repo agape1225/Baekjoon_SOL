@@ -18,9 +18,9 @@ int main() {
     }
 
     for(int i = 0; i < N; i++){
-        for(int j = 0; j < i; j++){
-            if(arr[i] > arr[j]){
-                cache[i] = max(cache[i], cache[j] + arr[i]);
+        for(int j = i; j < N; j++){
+            if(arr[i] < arr[j]){
+                cache[j] = max(cache[j], cache[i] + arr[j]);
             }
         }
     }
