@@ -3,32 +3,34 @@
 
 using namespace std;
 
-int arr[1000];
-int cache[1000] = { 0 };
+int main() {
 
-int main(void) {
-	
-	int N;
-	int ans = 0;
+    int cache[1005] = {0};
+    int arr[1005] = {0};
+    int N;
+    int ans = -1;
 
-	cin >> N;
+    cin >> N;
 
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-		cache[i] = arr[i];
-	}
+    for(int i = 0; i < N; i++){
+        cin >> arr[i];
+        cache[i] = arr[i];
+    }
 
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < i; j++) {
-			if (arr[i] > arr[j]) {
-				cache[i] = max(cache[i], cache[j] + arr[i]);
-			}
-		}
-		ans = max(ans, cache[i]);
-	}
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < i; j++){
+            if(arr[i] > arr[j]){
+                cache[i] = max(cache[i], cache[j] + arr[i]);
+            }
+        }
+    }
 
-	cout << ans;
-	
-	return 0;
+    for(int i = 0; i < N; i++){
+        ans = max(ans, cache[i]);
+    }
 
+    cout << ans;
+    
+    
+    return 0;
 }
