@@ -26,8 +26,14 @@ int main(void){
             }
         }
 
-        ans = max(ans, cache[i]);
+        
     }
+
+    for(int i = 0; i < N; i++){
+ans = max(ans, cache[i]);
+    }
+
+    
 
     cout << cache[N - 1];
 
