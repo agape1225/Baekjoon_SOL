@@ -3,50 +3,48 @@
 
 using namespace std;
 
-int S[50005] = {0};
-int cache[105][50005] = {0};
-
-int N, K;
-
-int ans = -1;
+    int cache[50001][101] = {0};
+    int arr[50001];
 
 int main(void){
 
+
+    int N, K;
+    int ans = -1;
+
     cin >> N >> K;
 
-    for(int i = 1; i <= N; i++){
-        cin >> S[i];
+    for(int i = 0; i < N; i++){
+        cin >> arr[i];
     }
 
     for(int i = 1; i <= N; i++){
-        bool is_even = S[i] % 2 == 0;
-
+        bool is_even = arr[i - 1] % 2 == 0;
         for(int j = 0; j <= K; j++){
-            
+
             if(is_even){
-                cache[j][i] = cache[j][i - 1] + 1;
-            }else if(j != 0){
-                cache[j][i] = cache[j - 1][i - 1];
+                cache[i][j] = cache[i - 1][j] + 1;
+            }else if(j != -1){
+                cache[i][j] = cache[i - 1][j - 1];
             }
-
+            
         }
     }
 
-    for(int i = 1; i <= N; i++){
+    for(int i = 0; i <= N; i++){
         for(int j = 0; j <= K; j++){
-            ans = max(ans, cache[j][i]);
+            ans = max(ans, cache[i][j]);
         }
     }
 
-    for(int i = 1; i <= N; i++){
+    for(int i = 0; i <= N; i++){
         for(int j = 0; j <= K; j++){
-            cout << cache[j][i] << ' ';
+            cout << cache[i][j] << ' ';
         }
         cout << endl;
     }
 
-    cout << cache[K][N];
+    cout << ans;
 
     return 0;
-
 }
