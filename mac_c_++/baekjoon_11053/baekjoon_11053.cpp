@@ -4,38 +4,31 @@
 using namespace std;
 
 int main(void){
-
+    int n;
     int arr[1005];
-    int cache[1005];
-    int N;
+    int cache[1005] = {0};
     int ans = -1;
-
-    cin >> N;
-
-    for(int i = 0; i < N; i++){
+    
+    cin >> n;
+    for(int i = 0; i < n; i++){
         cin >> arr[i];
         cache[i] = arr[i];
     }
-
-    ans = arr[0];
-
-    for(int i = 0; i < N; i++){
-        int standard_number = arr[i];
-        for(int j = i + 1; j < N; j++){
-            if(standard_number < arr[j]){
+    
+    for(int i = 0; i < n; i++){
+        for(int j = i; j < n; j++){
+            if(arr[j] > arr[i]){
                 cache[j] = max(cache[j], cache[i] + arr[j]);
             }
         }
     }
-
-    for(int i = 0; i < N; i++){
+    
+    for(int i = 0; i < n; i++){
         ans = max(ans, cache[i]);
     }
-
+    
     cout << ans;
-
+    
     return 0;
-
-
-
+    
 }
