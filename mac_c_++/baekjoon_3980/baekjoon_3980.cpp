@@ -21,6 +21,7 @@ int main(void){
             int tmp = -1;
 
             for(int i = 0; i < 11; i++){
+                if(tmp < ability    )
                 tmp = max(tmp, ability[i][j]);
             }
 

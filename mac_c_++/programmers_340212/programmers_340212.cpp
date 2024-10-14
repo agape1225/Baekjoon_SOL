@@ -49,7 +49,5 @@ int solution(vector<int> diffs, vector<int> times, long long limit) {
         
     }
     
-    // answer = mid;
-    
     return answer;
 }
