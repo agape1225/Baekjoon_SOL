@@ -1,52 +1,49 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
 
 using namespace std;
 
+int trees[1000005];
+
 int main(void){
-    int N, M, tree, max_tree;
-    vector<int> trees;
-    int left, right, mid ,ans;
 
-    max_tree = 0;
+    //이분 탐색 이지렁!
 
+    int N, M;
+    
+    int left = 1;
+    int right = 1;
+    int ans = -1;
     cin >> N >> M;
 
     for(int i = 0; i < N; i++){
-        cin >> tree;
-        trees.push_back(tree);
-        max_tree = max(max_tree, tree);
+        cin >> trees[i];
+        right = max(right, trees[i]);
     }
 
-    left = 0;
-    right = max_tree;
-    ans = 0;
-
-    sort(trees.begin(), trees.end());
+    // ans = right;
 
     while(left <= right){
-        mid = (left + right) / 2;
-        long long tmp = 0;
-        for(auto it : trees){
-            if(mid < it){
-                tmp += it - mid;
+        int mid = (left + right) / 2;
+        int tree_sum = 0;
+
+        for(int i = 0; i < N; i++){
+            if(trees[i] > mid){
+                tree_sum += trees[i] - mid;
             }
         }
 
-        // cout << mid << ' ' << tmp << endl;
-
-        if(tmp >= M){
+        if(tree_sum < M){
+            right = mid - 1;
+            
+        }else{
             left = mid + 1;
             ans = mid;
-        }else{
-            right = mid - 1;
         }
-
     }
+
     cout << ans;
 
     return 0;
-
 
 }
