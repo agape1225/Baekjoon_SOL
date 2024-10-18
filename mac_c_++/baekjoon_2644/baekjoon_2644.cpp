@@ -1,55 +1,50 @@
 #include <iostream>
-#include <vector>
+#include <algorithm>
 #include <queue>
+
 using namespace std;
 
-int main(void){
-    int N, M;
-    int to, from;
-    int ans = -1;
-    vector<int> graph[105];
+int main() {
+
+    int n, m;
+    int n1, n2;
+    int x, y;
+    bool graph[105][105] = {0};
     bool visited[105] = {0};
+    int ans = -1;
+    queue<pair<int, int>> q;
+    
+    cin >> n >> n1 >> n2 >> m;
 
-    cin >> N;
-    cin >> to >> from;
-    cin >> M;
-
-    for(int i = 0; i < M; i++){
-        int x, y;
-
+    for(int i = 0; i < m; i++){
         cin >> x >> y;
-
-        graph[x].push_back(y);
-        graph[y].push_back(x);
+        graph[x][y] = true;
+        graph[y][x] = true;
     }
 
-    //bfs
-
-    queue<pair<int, int>> q;
-    q.push(make_pair(to, 0));
-    visited[to] = true;
+    q.push(make_pair(n1, 0));
+    visited[n1] = true;
 
     while(!q.empty()){
-
-        int node = q.front().first;
-        int count = q.front().second;
+        int current_node = q.front().first;
+        int current_count = q.front().second;
         q.pop();
 
-        if(node == from){
-            ans = count;
+        // cout << current_node << endl;
+
+        if(current_node == n2){
+            ans = current_count;
             break;
         }
-
-        for(auto it : graph[node]){
-
-            if(!visited[it]){
-                visited[it] = true;
-                q.push(make_pair(it, count + 1));
+        
+        for(int i = 1; i <= n; i++){
+            if(graph[current_node][i] && !visited[i]){
+                visited[i] = true;
+                q.push(make_pair(i, current_count + 1));
             }
         }
     }
     cout << ans;
-    
+        
     return 0;
-
 }
