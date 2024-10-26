@@ -7,7 +7,7 @@ int main(void){
 
     int money[100005] = {0};
     int N, M;
-    int left = 1;
+    int left = 0;
     int right = 0;
     cin >> N >> M;
 
@@ -15,7 +15,7 @@ int main(void){
 
         cin >> money[i];
         right += money[i];
-        // left = max(left, money[i]);
+        left = max(left, money[i]);
     }
 
     int  ans = right;
@@ -28,15 +28,8 @@ int main(void){
         int count = 1;
         int K = (left + right) / 2;
         int curr_money = K;
-        bool is_over = false;
 
         for(int i = 0; i < N; i++){
-
-            if(K < money[i]){
-                is_over = true;
-                break;
-            }
-                
             if(curr_money >= money[i]){
                 curr_money -= money[i];
             }else{
@@ -46,15 +39,15 @@ int main(void){
             }
         }
 
-        if(is_over || count > M){
+        if(count > M){
             left = K + 1;
         }else{
             right = K - 1;
-            ans = min(K, ans);
+            ans = K;
         }
     }
 
-    cout << ans << endl;
+    cout << ans;
 
     return 0;
 }
