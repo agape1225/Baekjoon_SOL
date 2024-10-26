@@ -179,7 +179,7 @@ void adjust_one_cluster(pair<int, int> fall_clusters_pos)
         //     dis = min(min_row - max_row, dis);
     }
 
-    cout << "dis : " << dis << endl;
+    // cout << "dis : " << dis << endl;
 
 
     for (int i = R - 1; i >= 0; i--)
@@ -255,15 +255,15 @@ int main(void)
 
         // erase
         erase_minaral(i % 2 == 0, R - highs[i]);
-            for (int i = 0; i < R; i++)
-        {
-            for (int j = 0; j < C; j++)
-            {
-                cout << cave[i][j];
-            }
-            cout << '\n';
-        }
-        cout << '\n';
+        //     for (int i = 0; i < R; i++)
+        // {
+        //     for (int j = 0; j < C; j++)
+        //     {
+        //         cout << cave[i][j];
+        //     }
+        //     cout << '\n';
+        // }
+        // cout << '\n';
         fall_clusters();
 
         // get new cluster
