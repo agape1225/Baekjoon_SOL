@@ -42,8 +42,6 @@ void erase_minaral(bool dir, int high)
 
 pair<int, int> get_fall_clusters()
 {
-
-    // 마지막 row만 보면됨
     bool visited[105][105] = {0};
     pair<int, int> pos = {-1, -1};
 
@@ -53,10 +51,6 @@ pair<int, int> get_fall_clusters()
         {
             if (cave[i][j] == 'x' && !visited[i][j])
             {
-
-                // cout << "--------------------------" << endl;
-
-                // bfs start
                 int min_row = -1;
                 int start_row = i;
                 int start_col = j;
@@ -67,16 +61,11 @@ pair<int, int> get_fall_clusters()
 
                 while (!q.empty())
                 {
-
-                    // cout << i << ' ' << j << endl;
                     int curr_row = q.front().first;
                     int curr_col = q.front().second;
                     q.pop();
 
-                    
-
                     min_row = max(min_row, curr_row);
-                    // cout << curr_row << ' ' << curr_col << ' ' << min_row << endl;
 
                     for (int k = 0; k < 4; k++)
                     {
@@ -93,7 +82,6 @@ pair<int, int> get_fall_clusters()
 
                 if (min_row != R - 1)
                 {
-                    // cout << min_row << endl;
                     return make_pair(start_row, start_col);
                 }
             }
@@ -106,13 +94,6 @@ pair<int, int> get_fall_clusters()
 void adjust_one_cluster(pair<int, int> fall_clusters_pos)
 {
     int visited[105][105] = {0};
-    // string new_cave[105];
-
-    // for(int i = 0; i < R; i++){
-    //     new_cave[i] = cave[i];
-    // }
-
-    // bfs start
     queue<pair<int, int>> q;
     int min_row = -1;
 
@@ -163,24 +144,7 @@ void adjust_one_cluster(pair<int, int> fall_clusters_pos)
                 }
             }
         }
-
-        // int min_row = R;
-        // for(int row = R - 1; row >= 0; row--){
-        //     if(cave[row][col] == '.'){
-        //         min_row = row;
-        //         break;
-        //     }
-        // }
-
-        // // cout << min_row << ' ' << max_row << endl;
-
-        // if(max_row != -1)
- 
-        //     dis = min(min_row - max_row, dis);
     }
-
-    // cout << "dis : " << dis << endl;
-
 
     for (int i = R - 1; i >= 0; i--)
     {
@@ -193,15 +157,6 @@ void adjust_one_cluster(pair<int, int> fall_clusters_pos)
             }
         }
     }
-
-    // for (int i = 0; i < R; i++)
-    // {
-    //     for (int j = 0; j < C; j++)
-    //     {
-    //         cout << visited[i][j] << ' ';
-    //     }
-    // }
-    // cout << '\n';
 }
 
 void fall_clusters()
@@ -212,27 +167,6 @@ void fall_clusters()
     if(fall_clusters_pos.first != -1 && fall_clusters_pos.second != -1){
         adjust_one_cluster(fall_clusters_pos);
     }
-
-    // cout << fall_clusters_pos.first << ' ' << fall_clusters_pos.second << endl;
-    // while (fall_clusters_pos.first != -1 && fall_clusters_pos.second != -1)
-    // {
-
-        
-    //     // break;
-
-    //     adjust_one_cluster(fall_clusters_pos);
-    //     // for (int i = 0; i < R; i++)
-    //     // {
-    //     //     for (int j = 0; j < C; j++)
-    //     //     {
-    //     //         cout << cave[i][j];
-    //     //     }
-    //     //     cout << '\n';
-    //     // }
-    //     // cout << '\n';
-
-    //     fall_clusters_pos = get_fall_clusters();
-    // }
 }
 
 int main(void)
@@ -252,23 +186,8 @@ int main(void)
 
     for (int i = 0; i < N; i++)
     {
-
-        // erase
         erase_minaral(i % 2 == 0, R - highs[i]);
-        //     for (int i = 0; i < R; i++)
-        // {
-        //     for (int j = 0; j < C; j++)
-        //     {
-        //         cout << cave[i][j];
-        //     }
-        //     cout << '\n';
-        // }
-        // cout << '\n';
         fall_clusters();
-
-        // get new cluster
-
-        // fall down
     }
 
     for (int i = 0; i < R; i++)
@@ -282,12 +201,3 @@ int main(void)
 
     return 0;
 }
-
-// ........
-// ........
-// .....xx.
-// ...xxx..
-// ..xxx...
-// ..x.xxx.
-// ..x...x.
-// .xxx..x.
