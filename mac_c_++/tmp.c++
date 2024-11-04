@@ -1,74 +1,81 @@
-#include <string>
-#include <vector>
-#include <queue>
 #include <iostream>
+#include <algorithm>
+#include <queue>
 
 using namespace std;
 
-vector<int> graph[1000001];
-bool node[1000001] = {0};
-int count_in[1000001] = {0};
-int count_out[1000001] = {0};
+    vector<int> graph[3001];
+    bool visited_n[3001] = {0};
+    bool visited_e[3001][3001] = {0};
+    int V, E;
+    int node1, node2;
+    int start_node = 1;
+    int max_size = -1;
+    bool is_ans = false;
 
-int get_ans_node(){
-    int max_node = 0;
-    int max_node_size = -1;
-    for(int i = 0; i < 1000001; i++){
-        //node is in graph
-        if(node[i]){
-            if(count_in[i] == 0 && count_out[i] >= 2){
-                return i;
+void dfs(int current_node, int count){
+
+    if(count == E){
+        bool flag = true;
+        for(int i = 1; i <= V; i++){
+            if(!visited_n[i]){
+                flag = false;
             }
+                
+        }
+
+        if(flag){
+            is_ans = true;
         }
     }
-    return -1;
+
+    // bool ans = false;
+
+    for(int i = 0; i < graph[current_node].size(); i++){
+        int next = graph[current_node][i]; // 노드 x의 연결되어 있는 다음 노드
+        graph[current_node].erase(graph[current_node].begin()+i); // 제거
+        
+        // 그 노드에서도 상호 연결이 되어있기 때문에 인덱스를 찾아 연결을 끊어줌
+        auto it = find(graph[next].begin(),graph[next].end(),current_node);
+        graph[next].erase(it);
+        // or 연산을 통해 하나라도 true면 true
+        visited_n[next] = true;
+        dfs(next,count+1);
+        i--; // i가 하나 줄었으므로 i--
+    }
+    // return ans;
 }
 
-int get_graph_type(int start_node){
-    queue<int> q;
-    bool visited[100001];
-    
-    q.push(start_node);
-    
-    while(true){
-        int node = q.front();
-        q.pop();
-        if(graph[node].size() != 1){
-            if(graph[node].size() == 0)
-                return 2;
-            else
-                return 3;
+int main(void){
+
+
+    cin >> V >> E;
+
+    for(int i = 0; i < E; i++){
+        cin >> node1 >> node2;
+        graph[node1].push_back(node2);
+        graph[node2].push_back(node1);
+    }
+
+
+
+
+    for(int i = 1; i <= V; i++){
+        int size = graph[i].size();
+        if(size > max_size){
+            max_size = size;
+            start_node = i;
         }
-        if(node == start_node)
-            return 1;
-        
-        q.push(graph[node][0]);
-        
     }
-}
 
-vector<int> solution(vector<vector<int>> edges) {
-    vector<int> answer = {0, 0, 0, 0};
-    int ans_node = -1;
-    //정점을 구한다.
-    
-    //create graph
-    for(int i = 0; i < edges.size(); i++){
-        graph[edges[i][0]].push_back(edges[i][1]);
-        
-        node[edges[i][0]] = true;
-        node[edges[i][1]] = true;
-        
-        count_in[edges[i][1]]++;
-        count_out[edges[i][0]]++;
+    visited_n[start_node] = true;
+    dfs(start_node, 0);
+
+    if(is_ans){
+        cout << "YES";
+    }else{
+        cout << "NO";
     }
+    return 0;
     
-    int start_node = get_ans_node();
-    answer[0] = start_node;
-    if(int i = 0; i < graph[start_node].size(); i++){
-        int root_node = graph[start_node][i];
-        answer[get_graph_type(root_node)]++;
-    }
-    
-    return answer;
 }

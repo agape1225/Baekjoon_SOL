@@ -18,9 +18,9 @@ void dfs(int current_node, int count){
     if(count == E){
         bool flag = true;
         for(int i = 1; i <= V; i++){
-            if(!graph[i].empty()){
-                flag =  false;
-            } 
+            if(!visited_n[i]){
+                flag = false;
+            }
                 
         }
 
@@ -39,6 +39,7 @@ void dfs(int current_node, int count){
         auto it = find(graph[next].begin(),graph[next].end(),current_node);
         graph[next].erase(it);
         // or 연산을 통해 하나라도 true면 true
+        visited_n[next] = true;
         dfs(next,count+1);
         i--; // i가 하나 줄었으므로 i--
     }
