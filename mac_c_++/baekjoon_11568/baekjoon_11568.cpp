@@ -28,7 +28,6 @@ int main(void){
     }
 
     cout << ans;
-
-    return 0;
+    
 
 }

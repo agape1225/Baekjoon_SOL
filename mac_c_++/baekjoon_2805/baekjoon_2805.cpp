@@ -9,11 +9,11 @@ int main(void){
 
     //이분 탐색 이지렁!
 
-    int N, M;
+    long long N, M;
     
-    int left = 1;
-    int right = 1;
-    int ans = -1;
+    long long left = 1;
+    long long right = 1;
+    long long ans = -1;
     cin >> N >> M;
 
     for(int i = 0; i < N; i++){
@@ -24,8 +24,8 @@ int main(void){
     // ans = right;
 
     while(left <= right){
-        int mid = (left + right) / 2;
-        int tree_sum = 0;
+        long long mid = (left + right) / 2;
+        long long tree_sum = 0;
 
         for(int i = 0; i < N; i++){
             if(trees[i] > mid){

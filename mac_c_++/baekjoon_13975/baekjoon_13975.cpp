@@ -23,12 +23,12 @@ int main(void){
         }
 
         while(pq.size() > 1){
-            int num1 = -pq.top();
+            long long num1 = -pq.top();
             pq.pop();
-            int num2 = -pq.top();
+            long long num2 = -pq.top();
             pq.pop();
             // cout << num1 << ' ' << num2 << endl;
-            int total = num1 + num2;
+            long long total = num1 + num2;
             ans += total;
             pq.push(-total);
         }

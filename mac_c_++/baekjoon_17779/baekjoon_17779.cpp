@@ -13,6 +13,8 @@ int get_index(int r, int c, int x, int y, int d1, int d2){
     3번 선거구: x+d1 ≤ r ≤ N, 1 ≤ c < y-d1+d2, 3번 경계선의 왼쪽 아래
     4번 선거구: x+d2 < r ≤ N, y-d1+d2 ≤ c ≤ N, 4번 경계선의 오른쪽 아래*/
 
+    
+
     if(r < x + d1 && c <= y){
         return 1;
     }
@@ -24,8 +26,6 @@ int get_index(int r, int c, int x, int y, int d1, int d2){
     }
     if(x + d2 < r && r <= N && y - d1 + d2 <= c && c <= N)
         return 4;
-    else 
-        return 5;
 
     // cout << "damn! : " << r << ' ' << c << ' '<< x << ' '<< y << ' '<< d1 << ' '<< d2 << ' ' << endl;
 
