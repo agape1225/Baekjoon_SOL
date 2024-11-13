@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <string>
 #include <algorithm>
 
@@ -6,37 +7,43 @@ using namespace std;
 
 bool buttons[10] = { 0 };
 
-bool check(int channel) {
-	string ch = to_string(channel);
+bool check_buttons(int channel) {
 
-	for (auto it : ch) {
-		if (buttons[it - '0']) {
+	string channel_str = to_string(channel);
+	for (int i = 0; i < channel_str.size(); i++) {
+		if (buttons[channel_str[i] - '0'])
 			return false;
-		}
 	}
 	return true;
 }
 
 int main(void) {
-	int N, M;
-	cin >> N >> M;
+	int N;
+	
+	int button_size;
 
-	for (int i = 0; i < M; i++) {
-		int buff;
-		cin >> buff;
-		buttons[buff] = true;
+	cin >> N >> button_size;
+
+	for (int i = 0; i < button_size; i++) {
+		int tmp;
+		cin >> tmp;
+		buttons[tmp] = true;
+	}
+
+	if (N == 100) {
+		cout << 0;
+		return 0;
 	}
 
 	int ans = abs(N - 100);
 
-	for (int i = 0; i < 1000000; i++) {
-		if (check(i)) {
-			int buff = abs(N - i) + to_string(i).size();
-			ans = min(ans, buff);
+	for (int i = 0; i <= 1000000; i++) {
+
+		if (check_buttons(i)) {
+			int tmp = abs(N - i) + to_string(i).size();
+			ans = min(ans, tmp);
 		}
 	}
-
 	cout << ans;
 	return 0;
-
 }
