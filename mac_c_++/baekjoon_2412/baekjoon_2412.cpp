@@ -6,10 +6,10 @@
 using namespace std;
 
 bool comp(pair<int,int> n1, pair<int, int>n2){
-    if(n1.second == n2.second){
-        return n1.first < n2.first;
+    if(n1.first == n2.first){
+        return n1.second < n2.second;
     }
-    return n1.second < n2.second;
+    return n1.first < n2.first;
 }
 
     int n, T;
@@ -41,11 +41,7 @@ int main(void){
         return 0;
     }
 
-    // sort(locations.begin(), locations.end(), comp);
-
-    //for(auto it: locations){
-      //  cout << it.first << ' ' << it.second << endl;
-    //}
+    sort(locations.begin(), locations.end(), comp);
 
     q.push(make_pair(0, make_pair(0, 0)));
 
@@ -60,37 +56,22 @@ int main(void){
             break;
         }
 
-        for(int i = 0; i < n; i++){
-            int target_x = locations[i].first;
-            int target_y = locations[i].second;
+        //다음 노드에 이분탐색
+        for(int row = current_x - 2; row <= current_x + 2; row++){
+            for(int col = current_y - 2; col <= current_y + 2; col++){
+                if(row < 0 || col < 0)
+                    continue;
+                pair<int, int> next_locations = make_pair(row, col);
+                auto it = lower_bound(locations.begin(), locations.end(), next_locations);
 
-            if(!visited[i]){
+                if(it != locations.end() && *it == next_locations){
+                    int index = it - locations.begin();
+                    if(!visited[index]){
+                        visited[index] = true;
+                        q.push(make_pair(current_count + 1, make_pair(next_locations.first, next_locations.second)));
+                    }
 
-                if(abs(target_y - current_y) > 2){
-                    break;
                 }
-
-                if( abs(target_x - current_x) <= 2){
-                    visited[i] = true;
-                    q.push(make_pair(current_count + 1, make_pair(target_x, target_y)));
-                }
-                
-            }
-        }
-        for(int i = n - 1; i >= 0; i--){
-            int target_x = locations[i].first;
-            int target_y = locations[i].second;
-
-            if(!visited[i]){
-
-                if(abs(target_x - current_x) > 2){
-                    break;
-                }
-                if( abs(target_y - current_y) <= 2){
-                    visited[i] = true;
-                    q.push(make_pair(current_count + 1, make_pair(target_x, target_y)));
-                }
-                
             }
         }
 
