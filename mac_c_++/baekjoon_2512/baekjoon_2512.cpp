@@ -1,64 +1,65 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
-vector<int> budget;
-
-int get_sum(int mid){
-    int sum = 0;
-    for(auto it : budget){
-        if(mid >= it){
-            sum += it;
-        }else
-            sum += mid;
-    }
-    return sum;
-}
 int main(void){
-    int N, M, tmp;
-    int total_sum = 0;
-    int max_num = 0;
-    int ans = 0;
-    int ans_index = -1;
+    int N, M;
+    int budget[10005];
+    int ans = 1000000000;
+    int sum = 0;
+    int max_budget = 0;
 
     cin >> N;
 
     for(int i = 0; i < N; i++){
-        //int tmp;
-        cin >> tmp;
-        total_sum += tmp;
-        max_num = max(max_num, tmp);
-        budget.push_back(tmp);
+        cin >> budget[i];
+        sum += budget[i];
+        max_budget = max(max_budget, budget[i]);
     }
 
     cin >> M;
 
-    if(total_sum <= M){
-        cout << max_num;
+    int left, right;
+    left = 1;
+    right = 1000000000;
+
+    if(sum <= M){
+        cout << max_budget;
         return 0;
     }
     
-    int left = 0;
-    int right = M;
-    int mid = -1;
 
-    while(left < right - 1){
-        //stop condition
+    while (left <= right)
+    {
+        int mid = (left + right) / 2;
+        long long total_budget = 0;
+        for(int i = 0; i < N; i++){
+            int current_budget = budget[i];
 
-        // cout << left << ' ' << right << ' ' << mid << endl;
-        
-        mid = (left + right) / 2;
-        int sum = get_sum(mid);
-        if(sum >= M){
-            right = mid;
-        }else{
-            left = mid;
+            if(current_budget <= mid){
+                total_budget += current_budget;
+            }else{
+                total_budget += mid;
+            }
         }
-    }
 
-    cout << mid;
+        // cout << left << ' ' << right << ' ' << mid << ' ' << total_budget << endl;
+
+        if(total_budget > M){
+            right = mid - 1;
+        }else{
+            left = mid + 1;
+            ans = mid;
+            // ans = min(mid, ans);
+        }
+
+    }
+    
+    cout << ans;
+
+    return 0;
 
 
 }
