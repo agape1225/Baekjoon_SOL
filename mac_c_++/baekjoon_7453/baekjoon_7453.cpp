@@ -7,7 +7,7 @@ using namespace std;
 int main(void){
     int n;
     long long input = 0;
-    int ans = 0;
+    long long ans = 0;
 
     vector<long long> tmp[4];
     vector<long long> arr1;
