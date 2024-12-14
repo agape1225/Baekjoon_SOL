@@ -3,51 +3,58 @@
 
 using namespace std;
 
-int main(void){
 
-    int money[100005] = {0};
+int cache[100005];
+
+int main(void){
     int N, M;
-    int left = 0;
-    int right = 0;
+    int left, right;
+    int ans = -1;
+
+    left = 0;
+    right = 0;
+
     cin >> N >> M;
 
     for(int i = 0; i < N; i++){
+        cin >> cache[i];
+        // cout << cache[i] << endl;
+        left = max(cache[i], left);
+        right += cache[i];
 
-        cin >> money[i];
-        right += money[i];
-        left = max(left, money[i]);
+        // cout << left << ' ' << right << endl;
     }
 
-    int  ans = right;
+    ans = right;
 
-    while(left <= right){
-        //보다 작으면 됨 최소가 !!! M
-
-            // cout << left << ' ' << right << endl;
-
+    while (left <= right)
+    {
+        
+        int mid = (left + right) / 2;
+        int tmp = mid;
         int count = 1;
-        int K = (left + right) / 2;
-        int curr_money = K;
 
         for(int i = 0; i < N; i++){
-            if(curr_money >= money[i]){
-                curr_money -= money[i];
+            if(tmp >= cache[i]){
+                tmp -= cache[i];
             }else{
-                curr_money = K;
-                curr_money -= money[i];
                 count++;
+                tmp = mid;
+                tmp -= cache[i];
             }
         }
 
-        if(count > M){
-            left = K + 1;
+        if(count <= M){
+            ans = right;
+            right = mid - 1;
+            // ans = right;
         }else{
-            right = K - 1;
-            ans = K;
+            left = mid + 1;
         }
     }
-
+    
     cout << ans;
 
     return 0;
+
 }
