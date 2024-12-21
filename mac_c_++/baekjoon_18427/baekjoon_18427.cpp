@@ -27,18 +27,20 @@ int main(){
             block[i].push_back(num);
         }
     }
+
     for(int i = 0; i <= N; i++){
         dp[i][0] = 1;
-    } 
+    }
 
-    for(int i = 1; i <=N; i++){
+    for(int i = 1; i <= N; i++){
         for(int j = 1; j <= H; j++){
-            for(int k = 0; k < block[i].size(); k++){
-                if(j>=block[i][k]){
-                    dp[i][j] = (dp[i][j] + dp[i-1][j-block[i][k]]) % 10007;
-                } 
+            for(auto num : block[i]){
+                if(num <= j){
+                    // dp[i][j] = max(dp[i - 1][j], dp[i][j] + dp[i - 1][j - num]);
+                    dp[i][j] = (dp[i][j] + dp[i - 1][j - num]) % 10007;
+                }
             }
-            dp[i][j] = (dp[i][j]+dp[i-1][j])%10007;
+            dp[i][j] = (dp[i][j] + dp[i - 1][j]) % 10007;
         }
     }
 
