@@ -37,7 +37,7 @@ int main(){
             for(auto num : block[i]){
                 if(num <= j){
                     // dp[i][j] = max(dp[i - 1][j], dp[i][j] + dp[i - 1][j - num]);
-                    dp[i][j] = (dp[i][j] + dp[i - 1][j - num]) % 10007;
+                    // dp[i][j] = (dp[i][j] + dp[i - 1][j - num]) % 10007;
                 }
             }
             dp[i][j] = (dp[i][j] + dp[i - 1][j]) % 10007;
