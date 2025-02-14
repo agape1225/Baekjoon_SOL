@@ -1,37 +1,41 @@
+/*
+1. 입력
+2. 소수인지 아닌지 판단한다
+3. 소수면 카운트
+4. 정답 출력
+*/
 #include <iostream>
 #include <algorithm>
 
 using namespace std;
 
-bool is_prime(int n) {
+// 소수인지 아닌지를 판별한다.
+bool is_ans(int tmp){
     int count = 0;
-    for (int i = 1; i <= n; i++) {
-        if(n % i == 0){
+    for(int i = 1; i <= tmp; i++) {
+        if(tmp % i == 0){
             count++;
         }
     }
 
-    if(count == 2){
-        return true;
-    }else {
-        return false;
-    }
-    
+    return count == 2;
 }
 
 int main(void) {
-    int N, tmp;
-    int ans = 0;
-
+    int N;
+    int count = 0;
     cin >> N;
-    for(int i = 0; i < N; i++) {
+
+    for(int i = 0; i < N; i++){
+        int tmp;
         cin >> tmp;
-       if(is_prime(tmp)) {
-            ans++;        
-       }
+
+        if(is_ans(tmp)) {
+            count++;
+        }
     }
 
-    cout << ans;
+    cout << count;
 
     return 0;
 }
