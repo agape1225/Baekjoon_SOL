@@ -4,6 +4,9 @@
 using namespace std;
 
 int main(void) {
+    // ios::sync_with_stdio(false);
+	// cin.tie(0); cout.tie(0);
+
     string s = "";
     string t = "";
 
@@ -11,11 +14,15 @@ int main(void) {
 
     cin >> N;
 
+    // cout << N;
+
     for(int i = 0; i < N; i++){
+        // cout << "s";
         char tmp;
         cin >> tmp;
         s += tmp;
     }
+
 
     int left = 0;
     int right = N - 1;
@@ -45,18 +52,18 @@ int main(void) {
                 }
             }
 
-            if(true){
+            if(!is_add){
                 t += s[right--];
             }
 
         }
     }
 
-    for(int i = 0; i < N; i++) {
-        if (i != 0 && i % 80 == 0) cout << "\n";
+	
+	for (int i = 0; i < t.size(); i++) {
+		if (i != 0 && i % 80 == 0) cout << "\n";
 		cout << t[i];
-    }
-
+	}
     // cout << t;
 
     return 0;
