@@ -12,13 +12,14 @@ int main(void){
     cin >> n;
     for(int i = 0; i < n; i++){
         cin >> arr[i];
-        cache[i] = arr[i];
+        cache[i] = 1;
     }
     
-    for(int i = 0; i < n; i++){
-        for(int j = i; j < n; j++){
-            if(arr[j] > arr[i]){
-                cache[j] = max(cache[j], cache[i] + arr[j]);
+    for(int i = 0; i < n; i++) {
+        for(int j = i + 1; j < n; j++) {
+            if(arr[i] < arr[j]) {
+                cache[j] = max(cache[j], cache[i] + 1);
+                // cout << i << ' ' << j << ' ' << cache[i] << endl;
             }
         }
     }
