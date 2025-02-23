@@ -28,7 +28,7 @@ void get_comb(int* arr1, int* arr2, int N, int M){
     string comb = "";
 
     while(index < N){
-        index = get_max_index(arr1, index, N);
+        ind ex = get_max_index(arr1, index, N);
 
         int max_num = arr1[index];
         index++;
@@ -89,3 +89,15 @@ int main(void){
     return 0;
 
 }
+
+/*
+3 1 4 1 5 9
+1 1 1 1 1 2
+5
+
+23
+7
+
+3 2
+
+*/

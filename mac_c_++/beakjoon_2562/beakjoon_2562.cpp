@@ -26,6 +26,4 @@ int main(void) {
     cout << max_num << ' ' << max_index;
 
     return 0;
-
-
 }
