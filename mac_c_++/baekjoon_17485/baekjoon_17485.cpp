@@ -4,9 +4,15 @@
 using namespace std;
 
 /*
-    cache[i][j] = cache[i][j] 까지 올 수 있는 최소 비용
+    cache[i][j] = [i][j] 까지 올 수 있는 최소 비용
+
+    cache[i][j].first = 비용
+    second = 방향
+
+    cacche[i][j] = min( cache[i][j] , cache[i - 1][j] + map[i][new_j]);
+        * new_j - i != cache[i - 1][j].second;
 */
-pair<int, int> cache[1005][1005];
+int cache[1005][1005][3];
 
 int main(void) {
     int map[1005][1005] = {0};
@@ -22,11 +28,14 @@ int main(void) {
             cin >> map[i][j];
 
             if(i == 0) {
-                cache[i][j].first = map[i][j];
-                cache[i][j].second = -1;
+                cache[i][j][0] = map[i][j];
+                cache[i][j][1] = map[i][j];
+                cache[i][j][2] = map[i][j];
+                
             }else {
-                cache[i][j].first = 0;
-                cache[i][j].second = -1;
+                cache[i][j][0] = 0;
+                cache[i][j][1] = 0;
+                cache[i][j][2] = 0;
             }
         }
     }
@@ -60,68 +69,37 @@ int main(void) {
     //     // cout << endl;
     //}
 
-    for(int i = 0; i < N; i++) {
+    for(int i = 1; i < N; i++) {
         for(int j = 0; j < M; j++) {
+            for(int k = 0; k < 3; k++) {
 
-            if(i < N - 2) {
-                for(int k = 0; k < 3; k++) {
-                    for(int l = 0; l < 3; l++) {
-                        if(k != l && k != cache[i][j].second) {
-                            int tmp_j = j;
-                            int tmp_count = cache[i][j].first;
-    
-                            tmp_j += dir_y[k];
-    
-                            if(tmp_j < 0 ||  tmp_j >= M){
-                                continue;
-                            }
-    
-                            tmp_count += map[i + 1][tmp_j];
-    
-                            tmp_j += dir_y[l];
-                            
-                            if(tmp_j < 0 ||  tmp_j >= M){
-                                continue;
-                            }
-    
-                            tmp_count += map[i + 2][tmp_j];
-    
-                            if(cache[i + 2][tmp_j] == 0) {
-                                cache[i + 2][tmp_j].first = tmp_count;
-                                cache[i + 2][tmp_j].second = tmp_count;
-                            }else if(cache[i + 2][tmp_j].first > tmp_count){
-                                cache[i + 2][tmp_j].first = tmp_count;
-                                cache[i + 2][tmp_j].second = tmp_count;
-                            }
-                        }
-    
-                    }
-                }
-            }else if(i < N - 1) {
-                for(int k = 0; k < 3; k++) {
-                    if(j + dir_y[k] < 0 || j + dir_y[k] >= M){
-                        continue;
-                    }
-
-                    if(cache[i + 1][j + dir_y[k]] == 0) {
-                        cache[i + 1][j + dir_y[k]].first = cache[i][j].first + map[i + 1][j + dir_y[k]];
-                    }else{
-                        cache[i + 1][j + dir_y[k]].first = min(cache[i + 1][j + dir_y[k]].first,cache[i][j].first + map[i + 1][j + dir_y[k]] );
-                    }
+                if(k == 0) {
+                    int count = 0;
+                    int new_col = j + dir_y[k];
                     
+                    if(new_col )
+                }else if(k == 1) {
+
+                }else if(k == 2) {
+
                 }
-            }
-        }
-        cout << endl;
 
-        for(int row = 0; row < N; row++) {
-            for(int col = 0; col < M; col++) {
-                cout << cache[row][col].first << ' ';
-            }
-            cout << endl;
-        }
+                cache[i][j][k] = min(
 
-        cout << endl;
+                )
+            }
+            
+        }
+        // cout << endl;
+
+        // for(int row = 0; row < N; row++) {
+        //     for(int col = 0; col < M; col++) {
+        //         cout << cache[row][col].first << ' ';
+        //     }
+        //     cout << endl;
+        // }
+
+        // cout << endl;
     }
 
     int answer = cache[N - 1][0].first;
