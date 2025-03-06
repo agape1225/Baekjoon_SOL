@@ -21,7 +21,6 @@ int main(void) {
 
                 int sum = cards[i] + cards[j] + cards[k];
                 if(sum <= M) {
-                    // cout << i << ' ' << j << ' ' << k << ' ' << sum << endl;
                     ans = max(ans, sum);
                 }
 
