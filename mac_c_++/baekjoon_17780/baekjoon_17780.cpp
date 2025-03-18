@@ -29,15 +29,22 @@ pair<int,pair<int, int>> find_piece(int piece_num) {
 }
 
 bool is_game_end() {
-    return true;
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            if(game_info[i][j].size() >= 4) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 pair<int, int> get_next_dir(pair<int,pair<int, int>> piece_pos_info) {
     int dir = game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second;
     return make_pair(
         piece_pos_info.second.first + dir_row[dir],
-        piece_pos_info.second.second + dir_col[dir],
-    )
+        piece_pos_info.second.second + dir_col[dir]
+    );
 }
 
 int get_oppsited_dir(int dir){
@@ -51,7 +58,7 @@ int get_oppsited_dir(int dir){
         return 3;
     }
 }
-void get_next_dir(pair<int,pair<int, int>> piece_pos_info) {
+void set_next_dir(pair<int,pair<int, int>> piece_pos_info) {
     game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second = 
     get_oppsited_dir(game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second);
 }
@@ -87,7 +94,7 @@ void move_piece() {
                 int currnet_col = piece_pos_info.second.second;
 
                 for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
-                    game_info[next_dir.first][next_dir.second].push_back(game_info[current_row][currnet_col][i];)
+                    game_info[next_dir.first][next_dir.second].push_back(game_info[current_row][currnet_col][i]);
                 }
 
                 while(game_info[current_row][currnet_col].size() > 0) {
@@ -99,7 +106,7 @@ void move_piece() {
                 int currnet_col = piece_pos_info.second.second;
 
                 for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
-                    game_info[next_dir.first][next_dir.second].push_back(game_info[current_row][currnet_col][i];)
+                    game_info[next_dir.first][next_dir.second].push_back(game_info[current_row][currnet_col][i]);
                 }
 
                 while(game_info[current_row][currnet_col].size() > 0) {
@@ -111,12 +118,104 @@ void move_piece() {
 
             }else if(board[next_dir.first][next_dir.second] == 2) {
                 //blue
+                int dir = game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second;
+            int new_dir = get_oppsited_dir(dir);
+
+            int next_row = piece_pos_info.second.first + dir_row[new_dir];
+            int next_col = piece_pos_info.second.second + dir_col[new_dir];
+
+            if(!check_range(make_pair(next_row, next_col)) || board[next_row][next_col] == 2) {
+                //방향만 바꾸기
+                game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second = new_dir;
+
+            }else {
+                //이동
+                game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second = new_dir;
+                if(board[next_row][next_col] == 0) {
+                    //white
+                    // 모든 객체를 옮기기
+                    int current_row = piece_pos_info.second.first;
+                    int currnet_col = piece_pos_info.second.second;
+    
+                    for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
+                        game_info[next_row][next_col].push_back(game_info[current_row][currnet_col][i]);
+                    }
+    
+                    while(game_info[current_row][currnet_col].size() > 0) {
+                        game_info[current_row][currnet_col].pop_back();
+                    }
+                }else if(board[next_row][next_col] == 1) {
+                    //red
+                    int current_row = piece_pos_info.second.first;
+                    int currnet_col = piece_pos_info.second.second;
+    
+                    for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
+                        game_info[next_row][next_col].push_back(game_info[current_row][currnet_col][i]);
+                    }
+    
+                    while(game_info[current_row][currnet_col].size() > 0) {
+                        game_info[current_row][currnet_col].pop_back();
+                    }
+    
+                    reverse(game_info[next_row][next_col].begin(), game_info[next_row][next_col].end());
+    
+    
+                }
+
+            }
                 
             }
 
         }else {
-            // 방향 변환
-            set_opposite_dir(piece_pos_info);
+            // 방향 변환하고 한 칸 가기
+            // set_opposite_dir(piece_pos_info);
+            int dir = game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second;
+            int new_dir = get_oppsited_dir(dir);
+
+            int next_row = piece_pos_info.second.first + dir_row[new_dir];
+            int next_col = piece_pos_info.second.second + dir_col[new_dir];
+
+            if(!check_range(make_pair(next_row, next_col)) || board[next_row][next_col] == 2) {
+                //방향만 바꾸기
+                game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second = new_dir;
+
+            }else {
+                //이동
+                game_info[piece_pos_info.second.first][piece_pos_info.second.second][piece_pos_info.first].second = new_dir;
+                if(board[next_row][next_col] == 0) {
+                    //white
+                    // 모든 객체를 옮기기
+                    int current_row = piece_pos_info.second.first;
+                    int currnet_col = piece_pos_info.second.second;
+    
+                    for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
+                        game_info[next_row][next_col].push_back(game_info[current_row][currnet_col][i]);
+                    }
+    
+                    while(game_info[current_row][currnet_col].size() > 0) {
+                        game_info[current_row][currnet_col].pop_back();
+                    }
+                }else if(board[next_row][next_col] == 1) {
+                    //red
+                    int current_row = piece_pos_info.second.first;
+                    int currnet_col = piece_pos_info.second.second;
+    
+                    for(int i = 0; i < game_info[current_row][currnet_col].size(); i++) {
+                        game_info[next_row][next_col].push_back(game_info[current_row][currnet_col][i]);
+                    }
+    
+                    while(game_info[current_row][currnet_col].size() > 0) {
+                        game_info[current_row][currnet_col].pop_back();
+                    }
+    
+                    reverse(game_info[next_row][next_col].begin(), game_info[next_row][next_col].end());
+    
+    
+                }
+
+            }
+
+
         }
 
 
@@ -139,7 +238,7 @@ int main(void) {
     for(int i = 0; i < K; i++) {
         int row, col, dir;
         cin >> row >> col >> dir;
-        game_info[row][col].push_back(
+        game_info[row - 1][col - 1].push_back(
             make_pair(i, dir)
         );
     }
