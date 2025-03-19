@@ -15,6 +15,7 @@ int main(void) {
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < N; j++) {
             for(int k = 0; k < N; k++) {
+
                 if(i == j || j == k || i == k){
                     continue;
                 }
@@ -23,7 +24,6 @@ int main(void) {
                 if(sum <= M) {
                     ans = max(ans, sum);
                 }
-
             }
         }
     }
