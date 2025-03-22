@@ -7,6 +7,6 @@ using namespace std;
 int cache[100] = {0};
 int main() { 
 
-    cout << "0" < "010" << endl;     
+    cout << ("255" > "010") << endl;     
     return 0;
 } 
