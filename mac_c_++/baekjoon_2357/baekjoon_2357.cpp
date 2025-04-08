@@ -66,7 +66,7 @@ long long get_min(int start,  int end, int left, int right, int node) {
 
 int main(void) {
 
-    std::iostream::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
     
