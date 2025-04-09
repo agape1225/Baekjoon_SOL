@@ -1,77 +1,65 @@
 #include <iostream>
 #include <algorithm>
-#include <queue>
 #include <vector>
+#include <utility>
+
+#define INF 987654321
 
 using namespace std;
 
-// priority_queue< pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-
-// vector<int> board[20005][20005]; 
-
-vector<pair<int, int>> graph[20005];
-priority_queue<pair<int, int>> pq;
-int cost[20005] = {0};
-bool visited[20005] = {0};
-int V, E, K;
-
 int main(void) {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    cin.tie(0);
+    cout.tie(0);
+
+    int V, E, K;
+    int u, v, w;
+    int cache[20005] = {0};
+    vector<pair<int, int>> graph[20005];
+    priority_queue<pair<int, int>> pq;
 
     cin >> V >> E;
     cin >> K;
 
-    K--;
-
     for(int i = 0; i < E; i++) {
-        int u, v, w;
         cin >> u >> v >> w;
-        graph[u - 1].push_back(make_pair(w, v -1));
+        graph[u].push_back(make_pair(v, w));
     }
 
-    for(int i = 0; i < V; i++) {
-        cost[i] = 987654321;
+    // init cache
+    for(int i = 1; i <= V; i++) {
+        cache[i] = INF;
     }
 
-    pq.push(make_pair(K, 0));
-    cost[K] = 0;
+    pq.push(make_pair(0, K));
+    cache[K] = 0;
 
     while(!pq.empty()) {
-
         int node = pq.top().second;
         int weight = -pq.top().first;
 
         pq.pop();
 
         for(int i = 0; i < graph[node].size(); i++) {
+            int next_node = graph[node][i].first;
+            int next_weight = graph[node][i].second + weight;
 
-
-            int next_node = graph[node][i].second;
-            int next_weight = graph[node][i].first + weight;
-
-
-            // cout << next_weight << endl;
-
-            if(next_weight < cost[next_node]) {
-                // visited[next_node] = true;
-                cost[next_node] = next_weight;
+            if(cache[next_node] > next_weight) {
+                cache[next_node] = next_weight;
                 pq.push(make_pair(-next_weight, next_node));
             }
         }
     }
 
-    for(int i = 0; i < V; i++) {
-        if(cost[i] == 987654321){
-            cout << "INF" << endl;
+    for(int i = 1; i <= V; i++) {
+        if(cache[i] == INF) {
+            cout << "INF" << '\n';
         }else {
-            cout << cost[i] << endl;
+            cout << cache[i] << '\n';
         }
         
     }
 
     return 0;
-
 
 }
