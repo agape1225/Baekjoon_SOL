@@ -63,11 +63,6 @@ int main(void) {
 
     init_tree(0, N - 1, 1);
 
-    // for(int i = 0; i <= N * 4; i++) {
-    //     cout << tree[i] << ' ';
-    // }
-    // cout << endl;
-
     for(int i = 0; i < M + K; i++) {
         cin >> a >> b >> c;
         
@@ -75,13 +70,6 @@ int main(void) {
             // b를 c로 수정
             update_tree(0, N - 1, 1, b - 1, c - arr[b - 1]);
             arr[b - 1] = c;
-
-            // for(int i = 0; i <= N * 4; i++) {
-            //     cout << tree[i] << ' ';
-            // }
-            // cout << endl;
-
-
         }else {
             // b부터 c의 합을 출력
             cout << get_sum(0, N - 1, b - 1, c - 1, 1) << '\n';
