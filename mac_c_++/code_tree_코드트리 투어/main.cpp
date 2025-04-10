@@ -62,6 +62,20 @@ void set_cache() {
     // return id;
 }
 
+void update_product_dict() {
+
+    while(product_dic.size() > 0) {
+        product_dic.pop();
+    }
+
+    for(auto it : product) {
+        int tmp = it.second.first - cache[it.second.second];
+        if(tmp > -1) {
+            product_dic.push(make_pair(tmp, -it.first));
+        }
+    }
+}
+
 int main() {
 
     ios_base::sync_with_stdio(false);
@@ -71,7 +85,12 @@ int main() {
     cin >> Q;
     cin >> COMMAND >> N >> M;
 
-    set_cache();
+    
+
+    // for(int i = 0; i < N; i++) {
+    //     cout << cache[i] << ' ';
+    // }
+    // cout << endl;
 
     for(int i = 0; i < M; i++) {
         int v, u, w;
@@ -83,6 +102,8 @@ int main() {
         graph[u].push_back(make_pair(v, w));
     }
 
+    set_cache();
+
     for(int q = 0; q < Q - 1; q++) {
         cin >> COMMAND;
         // cout << COMMAND << endl;
@@ -92,9 +113,10 @@ int main() {
             
 
             int tmp = revenue - cache[dest];
+            // cout << tmp << endl;
+            product.insert(make_pair(id, make_pair(revenue, dest)));
             if(tmp > -1) {
-                product.insert(make_pair(id, make_pair(revenue, dest)));
-                product_dic.push(make_pair(tmp, id));
+                product_dic.push(make_pair(tmp, -id));
             }
 
         }else if(COMMAND == DELETE) {
@@ -103,24 +125,28 @@ int main() {
             product.erase(id);
         }else if(COMMAND == READ) {
             // sell
-            if(product_dic.size() > 0) {
-                int id = product_dic.top().second;
+            int ans_id = -1;
+            while(product_dic.size() > 0) {
+                int id = -product_dic.top().second;
                 product_dic.pop();
-                cout << id << '\n';
-                product.erase(id);
-            }else {
-                cout << -1 << '\n';
+
+                if(product.find(id) != product.end()) {
+                    ans_id = id;
+                    product.erase(id);
+                    break;
+                }
             }
-            // int id = get_best_product();
-            // if(id != -1) {
-            //     product.erase(id);
-            // }
-            // cout << id << '\n';
+
+            cout << ans_id << '\n';
 
         }else if(COMMAND == UPDATE) {
             int s;
             cin >> s;
             start_node = s; 
+
+            set_cache();
+            //update product dic
+            update_product_dict();
         }
     }
 
