@@ -126,7 +126,7 @@ bool update_target(info &curr_info) {
     for(int i = 0; i < 5; i++) {
         for(int j = 0; j < 5; j++) {
             int target_number = curr_info.map[i][j];
-            if(target_number == -1) {
+            if(target_number == -1 || visited[i][j]) {
                 continue;
             }
             vector<pair<int, int>> history;
@@ -189,11 +189,11 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    info ans;
-    int ans_list[15] = {0};
-    int max_index = 0;
-
+    
     info start;
+    int ans_index = 0;
+    info ans[20];
+    int ans_list[20] = {0};
 
     cin >> K >> M;
     for(int i = 0; i < 5; i++) {
@@ -206,116 +206,50 @@ int main() {
         cin >> his_number[i];
     }
 
+    // ans[0] = start;
 
-    // bfs 탐색 시작
-    q.push(start);
+    copy_info(ans[0], start);
 
-    while(!q.empty()) {
-        info curr_info = q.front();
-        // for(int i = 0; i < 5; i++) {
-        //     for(int j = 0; j < 5; j++) {
-        //         cout << curr_map.map[i][j] << ' ';
-        //     }
-        //     cout << endl;
-        // }
-        q.pop();
-        // cout << curr_info.count << endl;
-
-        if(curr_info.count == K) {
-            // cout << curr_info.value << ' ' << curr_info.history.size() << endl;
-            if(curr_info.value > ans.value) {
-                // ans = curr_info;
-                
-                copy_info(ans, curr_info);
-            }
-            continue;
-        }
-        // info new_info;
-        // copy_info(new_info, curr_info);
-        // set_new_map(2, 2, 0, new_info);
-        // update_target(new_info);
-        // cout << new_info.value << endl;
-        // set_new_piece(new_info);
-        // update_target(new_info);
-        // cout << new_info.value << endl;
-        // set_new_piece(new_info);
-        // update_target(new_info);
-        // cout << new_info.value << endl;
-
-        // for(int row = 0; row < 5; row++) {
-        //     for(int col = 0; col < 5; col++) {
-        //         cout << new_info.map[row][col] << ' ';
-        //     }
-        //     cout << endl;
-        // }
-
-        // break;
-
+    for(int k = 1; k <= K; k++) {
         info tmp;
-
-        for(int stand_row = 1; stand_row < 4; stand_row++) {
+        for(int degree = 0; degree < 3; degree++) {
             for(int stand_col = 1; stand_col < 4; stand_col++) {
-                for(int degree = 0; degree < 3; degree++) {
+                for(int stand_row = 1; stand_row < 4; stand_row++) {
                     info new_info;
                     bool flag = false;
-                    copy_info(new_info, curr_info);
+                    copy_info(new_info, ans[k - 1]);
                     new_info.count++;
-                    if(new_info.count > 1){
-                        // cout << new_info.value << endl << endl;
-                    }
-                    // new_info.map = curr_info.map;
-
-                    // int value = 0;
                     set_new_map(stand_row, stand_col, degree, new_info);
             
 
-                    while(update_target(new_info)) {
+                    if(update_target(new_info)) {
                         flag = true;
                         set_new_piece(new_info);
-                        // new_info.value += value;
                     }
-                    // cout << stand_row << ' ' << stand_col << degree << endl;
-                    
-                    // cout << new_info.value << endl << endl;
-
-                    // int diff = new_info.value
 
                     if(flag) {
                         if(tmp.value < new_info.value) {
-                            // cout << new_info.value << endl;
                             copy_info(tmp, new_info);
                         }
-                        // new_info.history.push_back(new_info.value - curr_info.value);
-                        // ans_list[new_info.count] += new_info.value - curr_info.value;
-                        // max_index = max(max_index, new_info.count);
-                        // q.push(new_info);
-                        // cout << new_info.value - curr_info.value << endl;
                     }
                 }
             }
         }
 
         if(tmp.count != 0) {
-            ans_list[tmp.count] = tmp.value - curr_info.value;
-            copy_info(ans, tmp);
-            // cout << ans.count << endl;
-            q.push(ans);
+
+            while(update_target(tmp)) {
+                set_new_piece(tmp);
+            }
+
+            cout << tmp.value - ans[k - 1].value << ' ';
+            ans_list[k] = tmp.value - ans[k - 1].value;
+            ans_index = k;
+            copy_info(ans[k], tmp);
+        }else {
+            break;
         }
-
-        // break;
     }
-
-    if(ans.count  > 0) {
-        // cout << ans.count << endl;
-        for(int i = 1; i <= ans.count; i++) {
-            cout << ans_list[i] << ' ';
-        }
-        // cout << ans.value << endl;
-        // for(auto it : ans.history) {
-        //     cout << it << ' ';
-        // }
-    }
-
 
     return 0;
 }
