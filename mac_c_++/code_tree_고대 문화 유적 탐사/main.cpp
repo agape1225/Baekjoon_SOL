@@ -213,6 +213,7 @@ int main() {
     for(int k = 1; k <= K; k++) {
         info tmp;
         for(int degree = 0; degree < 3; degree++) {
+        for(int stand_row = 1; stand_row < 4; stand_row++) {
             for(int stand_col = 1; stand_col < 4; stand_col++) {
                 for(int stand_row = 1; stand_row < 4; stand_row++) {
                     info new_info;
@@ -250,6 +251,16 @@ int main() {
             break;
         }
     }
+            ans_list[k] = tmp.value - ans[k - 1].value;
+            ans_index = k;
+            copy_info(ans[k], tmp);
+        }
+    }
 
+    if(ans_index  > 0) {
+        for(int i = 1; i <= ans_index; i++) {
+            cout << ans_list[i] << ' ';
+        }
+    }
     return 0;
 }
