@@ -15,19 +15,36 @@ int main(void) {
         cin >> rgb[0][i] >> rgb[1][i] >> rgb[2][i];
     }
 
-    cache[0][0] = rgb[0][0];
-    cache[1][0] = rgb[1][0];
-    cache[2][0] = rgb[2][0];
-
     for(int start = 0; start < 3; start++) {
-
 
         int cache[3][1005] = {0};
 
-        for(int end = 0; end < 3; end++) {
-            
+        for(int j = 0; j < 3; j++) {
+            if(j == start) {
+                cache[j][0] = rgb[j][0];
+            }else {
+                cache[j][0] = 987654321;
+            }
         }
+
+
+        for(int i = 1; i < N; i++) {
+            cache[0][i] = rgb[0][i] + min(cache[1][i - 1], cache[2][i - 1]);
+            cache[1][i] = rgb[1][i] + min(cache[0][i - 1], cache[2][i - 1]);
+            cache[2][i] = rgb[2][i] + min(cache[1][i - 1], cache[0][i - 1]);
+        }
+
+        for(int i = 0; i < 3; i++) {
+            if(i == start) {
+                continue;
+            }
+            ans = min(ans, cache[i][N - 1]);
+        }
+
+        // ans = min(ans, min(cache[0][N - 1], min(cache[1][N - 1], cache[2][N - 1])));
     }
+
+    cout << ans;
 
 
     // for(int i = 1; i < N; i++) {
