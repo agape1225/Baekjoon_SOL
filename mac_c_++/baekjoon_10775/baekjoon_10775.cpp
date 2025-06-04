@@ -42,36 +42,16 @@ int main(void) {
         // cin >> plain_number[i];
 
         int tmp = plain_number[i];
-        // cin >> tmp;
-
         int root = get_root(tmp);
 
         if(root == 0) {
             break;
         }
 
-        union_nodes(root, root -1);
-        
-        // if(get_root(tmp) == 0) {
-        //     break;
-        // }
+        union_nodes(root, root - 1);
 
         ans++;
-
-
     }
-
-    // for(int i = 0; i < P; i++) {
-    //     count_gates[
-    //         plain_number[i]
-    //     ] = i + 1;
-
-    //     if(count_gates[plain_number[i]] < i + 1) {
-    //         break;
-    //     }
-
-    //     ans++;
-    // }
 
     cout << ans;
 
