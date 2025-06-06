@@ -3,11 +3,12 @@
 #include <utility>
 #include <vector>
 #include <queue>
+#include <set>
 
 using namespace std;
 
 int N, M;
-char map[1005][1005];
+char inpt_map[1005][1005];
 int ans[1005][1005] = {0};
 bool visited[1005][1005] = {0};
 
@@ -24,13 +25,13 @@ int dir_col[4] = {0,1,0,-1};
 void set_cache() {
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < M; j++) {
-            if(visited[i][j] || map[i][j] == '1'){
+            if(visited[i][j] || inpt_map[i][j] == '1'){
                 continue;
             }
             visited[i][j] = true;
             int count = 1;
             queue<pair<int, int>> q;
-            vector<pair<int,int>> one_pos_list;
+            set<pair<int,int>> one_pos_list;
             q.push(make_pair(i, j));
 
             while(!q.empty()) {
@@ -44,7 +45,7 @@ void set_cache() {
 
                     if(check_range(next_row, next_col)) {
 
-                        if(map[next_row][next_col] == '0') {
+                        if(inpt_map[next_row][next_col] == '0') {
                             if(!visited[next_row][next_col]) {
                                 // cout << next_row << ' ' << next_col << '\n';
                                 count++;
@@ -53,10 +54,11 @@ void set_cache() {
                             }
 
                         }else {
-                            if(!visited[next_row][next_col]) {
-                                visited[next_row][next_col] = true;
-                                one_pos_list.push_back(make_pair(next_row, next_col));
-                            }
+                            one_pos_list.insert(make_pair(next_row, next_col));
+                            // if(!visited[next_row][next_col]) {
+                            //     // visited[next_row][next_col] = true;
+                                
+                            // }
                             
                         }
                     }
@@ -83,8 +85,8 @@ int main(void) {
 
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < M; j++) {
-            cin >> map[i][j];
-            if(map[i][j] == '1') {
+            cin >> inpt_map[i][j];
+            if(inpt_map[i][j] == '1') {
                 ans[i][j] = 1;
             }
         }
