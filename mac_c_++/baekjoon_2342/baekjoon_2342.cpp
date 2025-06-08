@@ -1,85 +1,62 @@
-/*
-
-cache를 왼발과 오른발로 나눈다.. 이게 맞는일 일까?흠.....
-
-*/
 #include <iostream>
 #include <algorithm>
-#include <utility>
+#include <vector>
 
 using namespace std;
 
-int command[100005] ;
-int cache[100005][5][5] = {0};
-int len = 1;
+int commands[100005] = {0};
+int count_commands = 0;
+int tmp;
 
-int get_point(int from, int to) {
+int cache[100005][5][5] = {0};
+
+int get_power(int from, int to) {
+    if(from == 0) {
+        return 2;
+    }
 
     if(from == to) {
         return 1;
     }
 
-    if(from == 0) {
-        return 2;
-    }
-
-    //반대편 이라는 뜻!
     if(from % 2 == to % 2) {
         return 4;
-    }else {
-        return 3;
     }
+
+    return 3;
 }
 
-int get_ans(int index, int left, int right) {
-    if(index == len - 1) {
+int get_ans(int count, int left, int right) {
+    // 종료 조건
+    if(count == count_commands) {
         return 0;
     }
 
-    if((left != 0 && right != 0) && left == right) {
-        return 987654321;
-    }
+    int next_pos = commands[count];
+    int tmp = cache[count][left][right];
 
-    if(cache[index][left][right] != -1) {
-        return cache[index][left][right];
-    }
+    if(tmp != 0) {
+        return tmp;
+    } 
 
-    return cache[index][left][right] = min(
-        get_ans(index + 1, command[index + 1], right) + get_point(left, command[index + 1]),
-        get_ans(index + 1, left, command[index + 1]) + get_point(right, command[index + 1])
+    return cache[count][left][right] = min(
+        get_ans(count + 1, left, next_pos) + get_power(right, next_pos),
+        get_ans(count + 1, next_pos, right) + get_power(left, next_pos)
     );
 }
 
 int main(void) {
-    int tmp;
-    // cache[i][0] = 왼발을 움직였을 때의 정보
-    // cache[i][1] = 오른발을 움직였을 때의 정보
-    // pair<int, pair<int, int>> cache[100005][2];
-    
 
-    cin >> tmp;
-    while(tmp != 0) {
-        // command.push_back(tmp);
-        command[len++] = tmp;
+    while(true) {
         cin >> tmp;
-    }
-
-    // if(command.size() == 0) {
-    //     cout << 0;
-    //     return 0;
-    // }
-
-    for(int i = 0; i <= len; i++) {
-        for(int j = 0; j < 5; j++) {
-            for(int k = 0; k < 5; k++) {
-                cache[i][j][k] = -1;
-            }
+        if(tmp == 0) {
+            break;
         }
+        commands[count_commands++] = tmp;
     }
 
     cout << get_ans(0, 0, 0);
 
     return 0;
-
 
 }
