@@ -8,6 +8,7 @@ using namespace std;
 int N;
 string str;
 bool is_palindrome[2505][2505] = {0};
+int dp[2505] = {0};
 
 int main(void) {
 
@@ -51,12 +52,24 @@ int main(void) {
         }
     }
 
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
-            cout << is_palindrome[i][j] << ' ';
+    //dp 시작하기
+    for(int end = 1; end <= N; end++) {
+        dp[end] = 987654321;
+        for(int start = 1; start <= end; start++) {
+            if(is_palindrome[start - 1][end - 1]) {
+                dp[end] = min(dp[end], dp[start - 1] + 1);
+            }
         }
-        cout << endl;
     }
+
+    cout << dp[N];
+
+    // for(int i = 0; i < N; i++) {
+    //     for(int j = 0; j < N; j++) {
+    //         cout << is_palindrome[i][j] << ' ';
+    //     }
+    //     cout << endl;
+    // }
 
     return 0;
 
