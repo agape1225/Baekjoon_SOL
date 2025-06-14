@@ -1,109 +1,133 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 #include <utility>
-#include <string>
 #include <map>
 #include <queue>
 
 using namespace std;
 
-// cost[i][j] = i와 j번째를 교환할 때 드는 비용
+// 비용 배열
 int cost[15][15] = {0};
-// int arr[10] = {0};
-string arr;
-// set<string> s;
-map<string, long long> m;
-priority_queue<pair<long long, string>> q;
+
+// vector<int>를 사용하는 자료구조
+vector<int> arr;
+map<vector<int>, long long> m;
+// 우선순위 큐는 min-heap으로 동작하도록 greater<> 사용
+priority_queue<pair<long long, vector<int>>, vector<pair<long long, vector<int>>>, greater<pair<long long, vector<int>>>> q;
+
 int N, M;
 int l, r, c;
 long long ans = -1;
-char tmp;
+
+// --- create_set 메소드 (vector<int> 버전) ---
+vector<int> printed_vecs;
+bool printed_chars_visited[15] = {0};
+
+void create_set(int index) {
+    if (index == N) {
+        // 완성된 순열을 map에 삽입
+        m.insert({printed_vecs, 9876543210LL});
+        return;
+    }
+
+    for (int i = 0; i < N; i++) {
+        if (!printed_chars_visited[i]) {
+            printed_chars_visited[i] = true;
+            printed_vecs[index] = arr[i];
+            create_set(index + 1);
+            printed_chars_visited[i] = false;
+        }
+    }
+}
+// --- create_set 종료 ---
+
 
 int main(void) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
     cin >> N;
 
-    for(int i = 0; i < N; i++) {
-        cin >> tmp;
-        arr += tmp;
+    // 입력을 vector<int>로 받음
+    arr.resize(N);
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
     }
+    
+    // create_set에서 사용할 vector 크기 설정
+    printed_vecs.resize(N);
 
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
+    // 비용 배열 초기화
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             cost[i][j] = -1;
         }
     }
 
-
     cin >> M;
 
-    for(int i = 0; i < M; i++) {
+    // 양방향으로 비용 저장
+    for (int i = 0; i < M; i++) {
         cin >> l >> r >> c;
-        cost[l - 1][r - 1] = c;
+        if (cost[l - 1][r - 1] == -1 || c < cost[l - 1][r - 1]) {
+             cost[l - 1][r - 1] = c;
+             cost[r - 1][l - 1] = c;
+        }
     }
 
-    q.push(make_pair(0, arr));
-    // s.insert(arr);
+    // set 생성
+    create_set(0);
 
-    m.insert(make_pair(arr, 0));
+    // 시작 상태 초기화
+    // m.find()는 iterator를 반환하므로, [] 연산자로 접근하는 것이 더 간편함
+    m[arr] = 0;
+    q.push({0, arr});
+    
+    // 목표 상태(정렬된 벡터) 생성
+    vector<int> sorted_arr = arr;
+    sort(sorted_arr.begin(), sorted_arr.end());
 
-    sort(arr.begin(), arr.end());
-
-    while(!q.empty()) {
-        string current_str = q.top().second;
-        long long current_count = -q.top().first;
+    while (!q.empty()) {
+        long long current_count = q.top().first;
+        vector<int> current_vec = q.top().second;
         q.pop();
 
-        if(current_count > m.find(current_str)->second) {
+        if (current_count > m[current_vec]) {
             continue;
         }
 
-        // s.insert(current_str);
-        if(arr == current_str) {
-            if(ans == -1) {
-                ans = current_count;
-            }else {
-                ans = min(ans, current_count) ;
-            }
-            
-            // continue;
-            break;
-        }
+        // if (current_vec == sorted_arr) {
+        //     // 목표를 찾았으므로 루프 종료
+        //     break;
+        // }
 
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                // cost[i][j] = -1;
-                if(cost[i][j] != -1) {
-                    string tmp_str = current_str;
-                    char tmp_char = tmp_str[i];
-                    tmp_str[i] = tmp_str[j];
-                    tmp_str[j] = tmp_char;
-
-                    auto it = m.find(tmp_str);
-
-
-                    if(it == m.end()) {
-                        m.insert(make_pair(tmp_str, (current_count + cost[i][j])));
-                        q.push(make_pair(-(current_count + cost[i][j]), tmp_str));
-                    }else{
-                        if(it->second > current_count + cost[i][j]) {
-                            it->second =current_count + cost[i][j];
-                            q.push(make_pair(-(current_count + cost[i][j]), tmp_str));
-                        }
-                    }
-
-                    // if(s.find(tmp_str) == s.end()) {
-                        
-                        
-                    // }
-
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+                if (cost[i][j] != -1) {
+                    vector<int> tmp_vec = current_vec;
+                    swap(tmp_vec[i], tmp_vec[j]);
                     
+                    long long new_cost = current_count + cost[i][j];
+
+                    // map에 키가 없거나(create_set으로 미리 생성했으므로 항상 존재),
+                    // 더 작은 비용을 발견하면 갱신
+                    if (m[tmp_vec] > new_cost) {
+                        m[tmp_vec] = new_cost;
+                        q.push({new_cost, tmp_vec});
+                    }
                 }
             }
         }
     }
+    
+    ans = m[sorted_arr];
 
-    cout << ans;
+    if (ans == 9876543210LL) {
+        cout << -1;
+    } else {
+        cout << ans;
+    }
+    
     return 0;
-
 }
