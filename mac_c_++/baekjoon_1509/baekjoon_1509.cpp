@@ -53,6 +53,7 @@ int main(void) {
     }
 
     //dp 시작하기
+
     for(int end = 1; end <= N; end++) {
         dp[end] = 987654321;
         for(int start = 1; start <= end; start++) {
@@ -61,7 +62,6 @@ int main(void) {
             }
         }
     }
-
     cout << dp[N];
 
     // for(int i = 0; i < N; i++) {
