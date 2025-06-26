@@ -7,7 +7,7 @@ int main(void) {
     int N;
     int B, C;
     int arr[1000005] = {0};
-    int count = 0;
+    long long count = 0;
 
     cin >> N;
 

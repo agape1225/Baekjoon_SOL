@@ -7,6 +7,15 @@ using namespace std;
 vector<vector<int>> board(15, vector<int> (15));
 queue<vector<vector<int>>, int> q;
 int N;
+int col[15] = {0};
+int ans = 0;
+
+int black_ans = 0;
+int white_ans = 0;
+
+void get_ans() {
+
+}
 
 int main(void) {
 
@@ -23,6 +32,10 @@ int main(void) {
         }
         cout << endl;
     }
+
+    get_ans(1);
+
+    cout << ans;
 
     return 0;
 
