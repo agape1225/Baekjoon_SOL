@@ -58,6 +58,7 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "memory": "cpp",
-        "print": "cpp"
+        "print": "cpp",
+        "unordered_set": "cpp"
     }
 }
