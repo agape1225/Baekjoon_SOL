@@ -3,6 +3,7 @@
 #include <queue>
 #include <algorithm>
 #include <set>
+#include <iostream>
 
 using namespace std;
 
@@ -60,6 +61,7 @@ int solution(int n, vector<vector<int>> costs) {
     int answer = 0;
     int count_node = 0;
     set<int> s;
+    int edge_count = 0;
     
     sort(costs.begin(), costs.end(), comp);
     
@@ -72,13 +74,17 @@ int solution(int n, vector<vector<int>> costs) {
         int node2 = it[1];
         int cost = it[2];
         
-        if(cache[node1] != cache[node2]) {
+        // cout << node1 << ' ' << node2 << ' ' << cost << endl;
+        
+        if(get_root(node1) != get_root(node2)) {
             answer += cost;
-            s.insert(node1);
-            s.insert(node2);
+            // s.insert(node1);
+            // s.insert(node2);
+            union_nodes(node1, node2);
+            edge_count++;
         }
         
-        if(s.size() == n) {
+        if(edge_count == n - 1) {
             break;
         }
     }
