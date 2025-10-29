@@ -1,103 +1,66 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
 
 using namespace std;
 
-int ans[105] = {0};
-int ans_count = 0;
+int main(void) {
+    int N, M, tmp;
+    vector<int> answer;
+    vector<int> a;
+    vector<int> b;
 
-int get_max_index(int* comb, int index, int N){
-    int max_index = index;
-    int max_value = comb[index];
-
-    for(int i = index + 1; i < N; i++){
-        if(max_value < comb[i]){
-            max_value = comb[i];
-            max_index = i;
-        }
+    cin >> N;
+    for(int i = 0; i < N; i++) {
+        cin >> tmp;
+        a.push_back(tmp);
     }
 
-    return max_index;
-}
+    cin >> M;
+    for(int i = 0; i < M; i++) {
+        cin >> tmp;
+        b.push_back(tmp);
+    }
 
-void get_comb(int* arr1, int* arr2, int N, int M){
+    int index_a = 0;
+    int index_b = 0;
 
-    int prev_index = 0;
-    int index = 0;
-    string comb = "";
+    while (index_a < N && index_b < M )
+    {
+        int max_a_index = -1;
+        int max_a_num = -1;
+        int max_b_index = -1;
+        int b_arr_count[105] = {0};
 
-    while(index < N){
-        ind ex = get_max_index(arr1, index, N);
+        for(int i = index_b; i < M; i++) {
+            b_arr_count[b[i]]++;
+        }
 
-        int max_num = arr1[index];
-        index++;
-        
-        for(int i = prev_index; i < M; i++){
-            if(arr2[i] == max_num){
-                // comb += to_string(max_num);
-                ans[ans_count] = max_num;
-                prev_index = i + 1;
-                ans_count++;
+        for(int i = index_a; i < N; i++) {
+            if(a[i] > max_a_num && b_arr_count[a[i]] > 0) {
+                max_a_num = a[i];
+                max_a_index = i;
+            }
+        }
+
+        if(max_a_index == -1) {
+            break;
+        }
+
+        for(int i = index_b; i < M; i++) {
+            if(b[i] == max_a_num) {
+                index_b = i + 1;
                 break;
             }
         }
 
-    }
-}
-
-int main(void){
-    int arr1[105];
-    int arr2[105];
-    int prev_index = 0;
-
-    int N, M;
-
-    cin >> N;
-    for(int i = 0; i < N; i++){
-        cin >> arr1[i];
-    }
-
-    cin >> M;
-    for(int j = 0; j < M; j++){
-        cin >> arr2[j];
+        answer.push_back(max_a_num);
+        index_a = max_a_index + 1;
     }
     
-    if(N < M){
-        get_comb(arr1, arr2, N, M);
-    }
-    else{
-        get_comb(arr2, arr1, M, N);
+    cout << answer.size() << '\n';
+    for(auto it : answer) {
+        cout << it << ' ';
     }
 
-    if(ans_count == 0){
-        cout << 0;
-    }else{
-        cout << ans_count << endl;
-
-        for(int i = 0; i < ans_count; i++ ){
-            if(i == ans_count - 1){
-                cout << ans[i];
-            }else{
-                cout << ans[i] << ' ';
-            }
-            
-        }
-    }
-
-    
     return 0;
-
 }
-
-/*
-3 1 4 1 5 9
-1 1 1 1 1 2
-5
-
-23
-7
-
-3 2
-
-*/
