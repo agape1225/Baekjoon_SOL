@@ -5,6 +5,11 @@
 using namespace std;
 
 int main(void) {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
     int N, input;
     priority_queue<int, vector<int>, greater<int>> pq;
 
@@ -19,7 +24,7 @@ int main(void) {
         }
     }
 
-    // for(int i = 0; i < N - 1; i++) {
+    // while(pq.size() > 1) {
     //     pq.pop();
     // }
 

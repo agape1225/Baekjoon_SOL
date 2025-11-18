@@ -5,39 +5,40 @@
 using namespace std;
 
 int main(void) {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    priority_queue<int> max_pq;
+    priority_queue<int, vector<int>, greater<int>> min_pq;
     int N, input;
-    priority_queue<int> max_q;
-    priority_queue<int> min_q;
 
     cin >> N;
 
     for(int i = 0; i < N; i++) {
         cin >> input;
 
-        if(max_q.size() == min_q.size()) {
-            // cout << "max " << input << endl; 
-            max_q.push(input);
-            
+        if(max_pq.size() == min_pq.size()) {
+            max_pq.push(input);
         }else {
-            // cout << "min " << input << endl;
-            min_q.push(-input);
+            min_pq.push(input);
         }
 
-        if(!max_q.empty() && !min_q.empty() && (max_q.top() > -min_q.top())) {
-            int min_num = -min_q.top();
-            int max_num = max_q.top();
+        if(!max_pq.empty() && !min_pq.empty() && max_pq.top() > min_pq.top()) {
+            int max_num = max_pq.top();
+            max_pq.pop();
 
-            // cout << min_num << ' ' << max_num << endl;
+            int min_num = min_pq.top();
+            min_pq.pop();
 
-            min_q.pop();
-            max_q.pop();
-
-            min_q.push(-max_num);
-            max_q.push(min_num);
+            max_pq.push(min_num);
+            min_pq.push(max_num);
         }
 
-        cout << max_q.top() << '\n';
+        cout << max_pq.top() << '\n';
     }
 
     return 0;
+    
 }

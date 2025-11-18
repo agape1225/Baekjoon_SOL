@@ -1,63 +1,57 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
-#include <vector>
 
 using namespace std;
 
-bool comp1(pair<int, int> n1, pair<int, int> n2) {
+bool comp(pair<int, int> n1, pair<int, int> n2) {
     return n1.first < n2.first;
 }
 
 int main(void) {
-    ios::sync_with_stdio(false);
-	cin.tie(0);
-    cout.tie(0);
+    vector<long long> bag_sizes;
+    vector<pair<long long, long long>> gem_infos;
+    priority_queue<long long>pq;
 
-    vector<int> bags;
-    vector<pair<int, int>> js;
-    priority_queue<int> pq; 
-    long long ans = 0;
-
-    int weight, value, space;
+    long long size, weight, ans;
     int N, K;
+
+    ans = 0;
 
     cin >> N >> K;
 
     for(int i = 0; i < N; i++) {
-        cin >> weight >> value;
-        js.push_back(make_pair(weight, value));
+        cin >> size >> weight;
+        gem_infos.push_back(make_pair(size, weight));
     }
 
     for(int i = 0; i < K; i++) {
-        cin >> space;
-        bags.push_back(space);
+        cin >> size;
+        bag_sizes.push_back(size);
     }
 
-    sort(js.begin(), js.end(), comp1);
-    sort(bags.begin(), bags.end());
+    sort(bag_sizes.begin(), bag_sizes.end());
+    sort(gem_infos.begin(), gem_infos.end(), comp);
 
-    // for(auto it : js) {
-    //     cout << it.first << ' ' << it.second << endl;
-    // }
+    int bag_index = 0;
 
-    int j_index = 0;
     for(int i = 0; i < K; i++) {
-        int bag_size = bags[i];
 
-        while(j_index < N && js[j_index].first <= bag_size) {
-            pq.push(js[j_index].second);
-            j_index++;
+        int bag_size = bag_sizes[i];
+
+        while(bag_index < N && bag_size >= gem_infos[bag_index].first) {
+            pq.push(gem_infos[bag_index++].second);
         }
 
         if(!pq.empty()) {
             ans += pq.top();
             pq.pop();
         }
-
     }
-    
+
     cout << ans;
 
     return 0;
+
+    
 }
