@@ -5,44 +5,52 @@
 
 using namespace std;
 
-struct comp {
-    bool operator()(pair<long long, long long> p1, pair<long long,long long> p2) {
-        if(p1.first == p2.first) {
-            return p1.second < p2.second;
-        }
-        return p1.first > p2.first;
+// struct comp {
+//     bool operator()(pair<int, int> p1, pair<int, int> p2) {
+
+//     }
+// }
+
+bool copm(pair<int, int> p1, pair<int, int> p2) {
+    if(p1.first == p2.first) {
+        return p1.second > p2.second;
     }
-};
+    return p1.first < p2.first;
+}
 
 int main(void) {
-    priority_queue<
-    pair<long long,long long>, vector<pair<long long, long long>>, comp
-    >pq;
-    long long N, a, b;
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int N;
     long long ans = 0;
-
+    long long tmp1, tmp2;
+    priority_queue<long long, vector<long long>, greater<long long>> pq;
+    vector<pair<int, int>> arr;
     cin >> N;
 
     for(int i = 0; i < N; i++) {
-        cin >> a >> b;
-        pq.push(make_pair(a, b));
+        cin >> tmp1 >> tmp2;
+        arr.push_back(make_pair(tmp1, tmp2));
     }
 
-    // cout << endl;
+    sort(arr.begin(), arr.end());
 
-    while(!pq.empty()) {
-        // cout << pq.top().first << ' ' << pq.top().second << endl;
-        // pq.pop();
+    int index = 0;
+    for(int i = 1; i <= N; i++) {
+        while(index < N && arr[index].first <= i) {
+            pq.push(arr[index].second);
+            index++;
+        }
 
-        long long dead_line = pq.top().first;
-        long long weight = pq.top().second;
-        pq.pop();
-        ans += weight;
-        // cout << ans << endl;
-
-        while(!pq.empty() && dead_line >= pq.top().first) {
+        while(pq.size() > i) {
             pq.pop();
         }
+    }
+
+    while(!pq.empty()) {
+        ans += pq.top();
+        pq.pop();
     }
 
     cout << ans;

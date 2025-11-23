@@ -1,45 +1,50 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
+#include <utility>
 
 using namespace std;
 
-struct comp
-{
-    /* data */
-
-    bool operator()(pair<int, int> n1, pair<int, int> n2) {
-        return n1.second < n2.second;
+struct comp {
+    bool operator()(pair<int, int> p1, pair<int, int> p2) {
+        if(p1.second == p2.second) {
+            return p1.first < p2.first;
+        }
+        return p1.second > p2.second;
     }
 };
 
-
 int main(void) {
-    int N, start, end;
+    int N, input1, input2;
     int ans = 0;
-    vector<pair<int, int>> time_line;
+    vector<pair<int, int>> arr;
     priority_queue<pair<int, int>, vector<pair<int, int>>, comp> pq;
 
     cin >> N;
 
     for(int i = 0; i < N; i++) {
-        cin >> start >> end;
-        time_line.push_back({start, end});
+        cin >> input1 >> input2;
+        arr.push_back(make_pair(input1, input2));
     }
 
-    sort(time_line.begin(), time_line.end());
+    sort(arr.begin(), arr.end());
 
     for(int i = 0; i < N; i++) {
-        start = time_line[i].first;
-        end = time_line[i].second;
+        int start = arr[i].first;
+        int end = arr[i].second;
 
-        if(!pq.empty()) {
-            if(start >= pq.top().second) {
-                pq.pop();
-            }
+        // cout << start << ' ' << end << endl;
+
+        
+
+        if(!pq.empty() && pq.top().second <= start) {
+            pq.pop();
         }
+        pq.push(make_pair(start, end));
 
-        pq.push(time_line[i]);
+        // cout << pq.top().second << endl;
+
+        // ans = max(ans, pq.size());
 
         ans = ans < pq.size() ? pq.size() : ans;
     }
@@ -47,4 +52,5 @@ int main(void) {
     cout << ans;
 
     return 0;
+
 }
