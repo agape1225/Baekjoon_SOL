@@ -4,36 +4,40 @@
 
 using namespace std;
 
-int main(void){
+int main(void) {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
     int T;
     cin >> T;
-    for(int t = 0; t < T; t++){
-        int K;
-        // vector<long long> files;
-        // vector<long long> newFilse;
-        priority_queue<long long> pq;
-        int tmp;
+
+    for(int t = 0; t < T; t++) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        int K, input;
         long long ans = 0;
 
         cin >> K;
 
-        for(int i = 0; i < K; i++){
-            cin >> tmp;
-            pq.push(-tmp);
+        for(int i = 0; i < K; i++) {
+            cin >> input;
+            pq.push(input);
         }
 
-        while(pq.size() > 1){
-            long long num1 = -pq.top();
+        while(pq.size() > 1) {
+            int tmp1 = pq.top();
             pq.pop();
-            long long num2 = -pq.top();
+
+            int tmp2 = pq.top();
             pq.pop();
-            // cout << num1 << ' ' << num2 << endl;
-            long long total = num1 + num2;
-            ans += total;
-            pq.push(-total);
+
+            ans += tmp1 + tmp2;
+
+            pq.push(tmp1 + tmp2);
         }
 
-        cout << ans << '\n';
+        cout <<  ans << '\n';
     }
 
     return 0;
