@@ -9,18 +9,15 @@ int main(void) {
     cin.tie(0);
     cout.tie(0);
 
-    // vector<pair<int,int>> 
-    priority_queue<int, vector<int>, greater<int>> pq;
+    int n, L, start, end;
     vector<pair<int, int>> coops;
-    int n, L;
-    int start, end;
+    priority_queue<int, vector<int>, greater<int>> pq;
     int ans = 0;
-
     cin >> n;
 
     for(int i = 0; i < n; i++) {
         cin >> start >> end;
-        if(end < start) {
+        if(start > end) {
             swap(start, end);
         }
 
@@ -54,6 +51,7 @@ int main(void) {
     }
 
     cout << ans;
-
+    
     return 0;
+
 }
