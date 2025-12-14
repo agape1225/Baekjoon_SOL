@@ -5,45 +5,41 @@
 using namespace std;
 
 int main(void) {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    int n, L, start, end;
-    vector<pair<int, int>> coops;
+    int n, h, o, ans = 0, L;
+    vector<pair<int, int>> table;
     priority_queue<int, vector<int>, greater<int>> pq;
-    int ans = 0;
     cin >> n;
 
     for(int i = 0; i < n; i++) {
-        cin >> start >> end;
-        if(start > end) {
-            swap(start, end);
+        cin >> h >> o;
+        if(h > o) {
+            swap(h, o);
         }
 
-        coops.push_back(
-            make_pair(end, start)
+        table.push_back(
+            make_pair(o, h)
         );
     }
 
     cin >> L;
 
-    sort(coops.begin(), coops.end());
+    sort(table.begin(), table.end());
+
+    for(auto it : table) {
+        cout << it.second << ' ' << it.first << endl;
+    }
 
     for(int i = 0; i < n; i++) {
-        start = coops[i].second;
-        end = coops[i].first;
+        h = table[i].second;
+        o = table[i].first;
 
-        if(end - start > L) {
+        if(o - h > L) {
             continue;
         }
 
-        pq.push(start);
+        pq.push(h);
 
-        while(
-            !pq.empty() &&
-            end - pq.top() > L
-        ) {
+        while(!pq.empty() && o - pq.top() > L) {
             pq.pop();
         }
 
@@ -51,7 +47,4 @@ int main(void) {
     }
 
     cout << ans;
-    
-    return 0;
-
 }
