@@ -5,46 +5,45 @@
 using namespace std;
 
 int main(void) {
-    int n, h, o, ans = 0, L;
-    vector<pair<int, int>> table;
+    int n, h, o, L;
+    int ans = 0;
+    vector<pair<int, int>> coops;
     priority_queue<int, vector<int>, greater<int>> pq;
-    cin >> n;
 
+    cin >> n;
     for(int i = 0; i < n; i++) {
         cin >> h >> o;
+
         if(h > o) {
             swap(h, o);
         }
 
-        table.push_back(
-            make_pair(o, h)
-        );
+        coops.push_back(make_pair(o, h));
     }
 
     cin >> L;
 
-    sort(table.begin(), table.end());
-
-    for(auto it : table) {
-        cout << it.second << ' ' << it.first << endl;
-    }
+    sort(coops.begin(), coops.end());
 
     for(int i = 0; i < n; i++) {
-        h = table[i].second;
-        o = table[i].first;
+        int start = coops[i].second;
+        int end = coops[i].first;
 
-        if(o - h > L) {
+        if(end - start > L) {
             continue;
         }
-
-        pq.push(h);
-
-        while(!pq.empty() && o - pq.top() > L) {
+        pq.push(start);
+        while(!pq.empty() && end - pq.top() > L) {
             pq.pop();
         }
 
         ans = max(ans, (int) pq.size());
+
     }
 
     cout << ans;
+
+    return 0;
+
+
 }
